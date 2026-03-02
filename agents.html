@@ -625,33 +625,5 @@
         </div>
     </footer>
 <script>
-    
-    
-    
-        
-        // Translate by text content
-        const textMap = {
-            "Welcome to AGI Company": t["welcome"] || "Welcome to AGI Company",
-            "Autonomous AI Operations": t["subtitle"] || "Autonomous AI Operations",
-            "Our Software": t["our_software"] || "Our Software",
-            "Professional Services": t["professional_services"] || "Professional Services",
-            "Contact Us": t["contact"] || "Contact Us",
-            "Make a Payment": t["payment"] || "Make a Payment",
-            "Our Agents": t["agents"] || "Our Agents"
-        };
-        
-        document.querySelectorAll("h1, h2, h3, p, a").forEach(el => {
-            const text = el.textContent.trim();
-            if (textMap[text]) {
-                el.textContent = textMap[text];
-            }
-        });
-        
-        // Update page title
-        document.title = (t["welcome"] || "AGI Company") + " | " + (t["subtitle"] || "Autonomous AI");
-    }
-    
-    // Load saved language on page load
-    </script>
 </body>
 </html>

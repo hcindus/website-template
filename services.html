@@ -348,26 +348,5 @@
         </div>
     </footer>
 <script>
-    
-    
-    
-        
-        // Smart translate: check ALL text elements against translation dictionary
-        document.querySelectorAll("h1, h2, h3, h4, h5, h6, p, li, span, .tagline, .service-price, .cta-buttons a").forEach(el => {
-            const text = el.textContent.trim();
-            if (!text || text.length < 2) return;
-            
-            // Direct match with translation key
-            if (t[text]) {
-                el.textContent = t[text];
-            }
-        });
-        
-        // Update page title
-        document.title = (t["welcome"] || "AGI Company") + " | " + (t["subtitle"] || "Autonomous AI");
-    }
-    
-    // Load saved language on page load
-    </script>
 </body>
 </html>
