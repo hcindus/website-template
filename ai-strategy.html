@@ -175,14 +175,6 @@
     <script>function toggleMobileMenu() { document.getElementById("mobileNav").classList.toggle("open"); }</script>
 
     <script>
-    window.addEventListener("DOMContentLoaded", function() {
-        const saved = localStorage.getItem("lang") || "en";
-        if (translations[saved]) {
-            document.querySelector(".lang-flag").textContent = langFlags[saved];
-            document.querySelector(".lang-name").textContent = langNames[saved];
-            applyTranslations(saved);
-        }
-    });
     </script>
     <script>function toggleMobileMenu() { document.getElementById("mobileNav").classList.toggle("open"); }</script>
 </body>
