@@ -50,6 +50,42 @@
             align-items: center;
         }
         
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: rgba(13,13,13,0.98);
+            border-bottom: 1px solid var(--border);
+            padding: 20px;
+            z-index: 99;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .mobile-nav.open { display: flex; }
+        
+        .mobile-nav a {
+            color: var(--text);
+            font-size: 1.1rem;
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none;
+        }
+        
+        .mobile-nav a:hover { color: var(--accent); }
+        
         .logo {
             font-size: 1.25rem;
             font-weight: 600;
@@ -244,6 +280,9 @@
 
         @media (max-width: 768px) {
             nav { display: none; }
+            .mobile-menu-btn { display: block; }
+            .mobile-nav { display: none; }
+            .mobile-nav.open { display: flex; }
             .container { padding: 0 16px; }
             .hero { padding: 60px 20px; }
             .hero h1 { font-size: 2rem; }
@@ -523,6 +562,8 @@
     
     function toggleLangMenu() { document.getElementById("langMenu").classList.toggle("open"); }
     
+    function toggleMobileMenu() { document.getElementById("mobileNav").classList.toggle("open"); }
+    
     function changeLang(code, flag, name) {
         localStorage.setItem("lang", code);
         document.querySelector(".lang-flag").textContent = flag;
@@ -675,7 +716,8 @@
         <header>
         <div class="container">
             <a href="/" class="logo" style="text-decoration:none"><span>AGI</span> Company</a>
-                                                <nav>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <nav>
                 <a href="/">Home</a>
                 <a href="/agents.html">Agents</a>
                 <a href="/software.html">Software</a>
@@ -686,6 +728,16 @@
             </nav>
         </div>
     </header>
+    
+    <div class="mobile-nav" id="mobileNav">
+        <a href="/">Home</a>
+        <a href="/agents.html">Agents</a>
+        <a href="/software.html">Software</a>
+        <a href="/services.html">Services</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/payment.html">Payment</a>
+        <a href="https://tappylewis.cloud">Tappy Lewis</a>
+    </div>
     
     <section class="page-title">
         <div class="container">

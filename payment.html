@@ -187,6 +187,7 @@
 
         @media (max-width: 768px) {
             nav { display: none; }
+            .mobile-menu-btn { display: block; }
             .container { padding: 0 16px; }
             .page-title { padding: 40px 0 30px; }
             .page-title h1 { font-size: 1.8rem; }
@@ -203,6 +204,12 @@
             .lang-current { padding: 6px 12px; font-size: 0.85rem; }
             footer { padding: 30px 16px; }
         }
+
+        .mobile-menu-btn { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+        .mobile-nav { display: none; position: fixed; top: 60px; left: 0; right: 0; background: #0d0d0d; border-bottom: 1px solid #1f1f1f; padding: 20px; z-index: 99; flex-direction: column; gap: 12px; }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav a { color: #fff; font-size: 1.1rem; padding: 12px; border-bottom: 1px solid #1f1f1f; text-decoration: none; }
+        .mobile-nav a:hover { color: #228B22; }
 
     </style>
 </head>
@@ -296,7 +303,8 @@
         <header>
         <div class="container">
             <a href="/" class="logo" style="text-decoration:none"><span>AGI</span> Company</a>
-                                                <nav>
+                                                            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <nav>
                 <a href="/">Home</a>
                 <a href="/agents.html">Agents</a>
                 <a href="/software.html">Software</a>
@@ -304,6 +312,16 @@
                 <a href="/contact.html">Contact</a>
                 <a href="/payment.html" class="active">Payment</a>
                 <a href="https://tappylewis.cloud">Tappy Lewis</a>
+    
+    <div class="mobile-nav" id="mobileNav">
+        <a href="/">Home</a>
+        <a href="/agents.html">Agents</a>
+        <a href="/software.html">Software</a>
+        <a href="/services.html">Services</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/payment.html">Payment</a>
+        <a href="https://tappylewis.cloud">Tappy Lewis</a>
+    </div>
             </nav>
         </div>
     </header>
@@ -628,6 +646,7 @@
     };
     
     function toggleLangMenu() { document.getElementById("langMenu").classList.toggle("open"); }
+    function toggleMobileMenu() { document.getElementById("mobileNav").classList.toggle("open"); }
     
     function changeLang(code, flag, name) {
         localStorage.setItem("lang", code);
