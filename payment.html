@@ -174,19 +174,6 @@
         .cart-summary li { padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--text); }
         .cart-popup .cart-total { font-size: 1.5rem; font-weight: 700; color: #228B22; margin-bottom: 24px; }
         .cart-buttons { display: flex; gap: 12px; justify-content: center; }
-        .receipt-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-        .receipt-table td { padding: 8px 4px; border-bottom: 1px solid var(--border); }
-        .receipt-table .total-row td { border-top: 2px solid var(--border); padding-top: 12px; }
-        .receipt-table tr:last-child td { border-bottom: none; }
-        .crypto-conversion { margin: 16px 0; padding: 12px; background: rgba(34,139,34,0.1); border-radius: 8px; }
-        .crypto-total { font-weight: 600; margin-bottom: 8px; }
-        .crypto-rates { display: flex; flex-wrap: wrap; gap: 8px; }
-        .crypto-rate { padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; transition: all 0.2s; }
-        .crypto-rate:hover { border-color: #228B22; }
-        .crypto-rate.selected { background: #228B22; border-color: #228B22; }
-        .crypto-rate .crypto-name { font-weight: 600; margin-right: 6px; }
-        .crypto-rate .crypto-amount { color: var(--muted); }
-        .crypto-rate.selected .crypto-amount { color: white; }
         .continue-btn { padding: 12px 24px; background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; text-decoration: none; }
         .pay-btn { padding: 12px 24px; background: #36454F; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: 600; }
 
@@ -198,10 +185,6 @@
         .lang-menu button { display: block; width: 100%; padding: 10px 16px; background: none; border: none; color: white; text-align: left; cursor: pointer; }
         .lang-menu button:hover { background: #333; }
 
-        @media (max-width: 768px) {
-            nav { display: none; }
-            .mobile-menu-btn { display: block; }
-            .container { padding: 0 16px; }
             .page-title { padding: 40px 0 30px; }
             .page-title h1 { font-size: 1.8rem; }
             .payment-cards { grid-template-columns: 1fr; gap: 12px; }
@@ -218,60 +201,6 @@
             footer { padding: 30px 16px; }
         }
 
-        .mobile-menu-btn { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
-        .mobile-nav { display: none; position: fixed; top: 60px; left: 0; right: 0; background: #0d0d0d; border-bottom: 1px solid #1f1f1f; padding: 20px; z-index: 99; flex-direction: column; gap: 12px; }
-        .mobile-nav.open { display: flex; }
-        .mobile-nav a { color: #fff; font-size: 1.1rem; padding: 12px; border-bottom: 1px solid #1f1f1f; text-decoration: none; }
-        .mobile-nav a:hover { color: #228B22; }
-
-    </style>
-</head>
-<body>
-
-    </div>
-
-
-    <!-- Cart Popup -->
-    <div class="cart-popup" id="cartPopup">
-        <div class="cart-popup-content">
-            <h2>Thank You!</h2>
-            <p>Your order is ready.</p>
-            <div class="cart-summary" id="cartSummary"></div>
-            <div class="cart-total">Total: $<span id="popupTotal">0</span></div>
-            <div class="crypto-conversion" id="cryptoConversion"></div>
-            <div class="cart-buttons">
-                <a href="/" class="continue-btn">Continue Shopping</a>
-                <button class="pay-btn" onclick="processPayment()">Pay Now</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-    // Check if this is a cart checkout
-    const urlParams = new URLSearchParams(window.location.search);
-    const itemsParam = urlParams.get('items');
-    const totalParam = urlParams.get('total');
-    const item = urlParams.get('item');
-    const amount = urlParams.get('amount');
-    
-    window.addEventListener('DOMContentLoaded', function() {
-        const orderItem = document.getElementById('orderItem');
-        const orderAmount = document.getElementById('orderAmount');
-        
-        // Always show popup when there's an item (cart functionality)
-        if (itemsParam && totalParam) {
-            // Show cart popup
-            const items = itemsParam.split(',');
-            let summaryHtml = '<ul>';
-            let total = 0;
-            items.forEach(item => {
-                // Parse item and price (format: "ItemName $Price")
-                let parts = item.trim().split(' $');
-                let name = parts[0];
-                let price = parts[1] || 0;
-                total += parseFloat(price);
-                summaryHtml += '<li>' + name + ' - $' + price + '</li>';
-            });
             summaryHtml += '</ul>';
             
             document.getElementById('cartSummary').innerHTML = summaryHtml;
@@ -303,6 +232,7 @@
         <header>
         <div class="container">
             <a href="/" class="logo" style="text-decoration:none"><span>AGI</span> Company</a>
+                                                            
             <nav>
                 <a href="/">Home</a>
                 <a href="/agents.html">Agents</a>
@@ -385,135 +315,7 @@
         </div>
         
         <script>
-        // Cart management
-        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        
-        // Crypto exchange rates (approximate)
-        const cryptoRates = {
-            'BTC': 87500,
-            'ETH': 3200,
-            'USDC': 1,
-            'USDT': 1,
-            'TRX': 0.28
-        };
-        
-        let selectedCrypto = 'BTC';
-        let currentTotal = 0;
-        
-        function addToCart(name, price) {
-            cart.push({ name: name, price: price });
-            localStorage.setItem('cart', JSON.stringify(cart));
-            showCart();
-        }
-        
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            showCart();
-        }
-        
-        function showCart() {
-            const cartSummary = document.getElementById('cartSummary');
-            const popupTotal = document.getElementById('popupTotal');
-            const orderItem = document.getElementById('orderItem');
-            const orderAmount = document.getElementById('orderAmount');
-            
-            if (cart.length === 0) {
-                cartSummary.innerHTML = '<p>No items</p>';
-                popupTotal.textContent = '0';
-                orderItem.innerHTML = '<div class="single-item">No items</div>';
-                orderAmount.textContent = '$0';
-                return;
-            }
-            
-            // Build receipt table
-            let html = '<table class="receipt-table">';
-            currentTotal = 0;
-            cart.forEach((item, index) => {
-                html += '<tr><td>' + item.name + '</td><td>$' + item.price + '</td><td><button onclick="removeFromCart(' + index + ')" style="background:none;border:none;color:#f97316;cursor:pointer;">✕</button></td></tr>';
-                currentTotal += parseFloat(item.price);
-            });
-            html += '<tr class="total-row"><td><strong>Total</strong></td><td><strong>$' + currentTotal.toFixed(2) + '</strong></td><td></td></tr></table>';
-            
-            cartSummary.innerHTML = html;
-            popupTotal.textContent = currentTotal.toFixed(2);
-            orderItem.innerHTML = html;
-            orderAmount.textContent = '$' + currentTotal.toFixed(2);
-            
-            // Show crypto conversion
-            showCryptoConversion();
-            
-            // Show popup
-            document.getElementById('cartPopup').classList.add('show');
-        }
-        
-        function showCryptoConversion() {
-            const conversionDiv = document.getElementById('cryptoConversion');
-            if (!conversionDiv) return;
-            
-            let html = '<div class="crypto-conversion">';
-            html += '<p class="crypto-total">Total: $' + currentTotal.toFixed(2) + ' =</p>';
-            html += '<div class="crypto-rates">';
-            
-            for (const [crypto, rate] of Object.entries(cryptoRates)) {
-                const cryptoAmount = currentTotal / rate;
-                const isSelected = crypto === selectedCrypto;
-                html += '<div class="crypto-rate' + (isSelected ? ' selected' : '') + '" onclick="selectCrypto(\'' + crypto + '\')">';
-                html += '<span class="crypto-name">' + crypto + '</span> ';
-                html += '<span class="crypto-amount">' + cryptoAmount.toFixed(crypto === 'BTC' ? 6 : 2) + '</span>';
-                html += '</div>';
-            }
-            
-            html += '</div></div>';
-            conversionDiv.innerHTML = html;
-        }
-        
-        // Check URL params and add to cart
-        const urlParams = new URLSearchParams(window.location.search);
-        const itemParam = urlParams.get('item');
-        const amountParam = urlParams.get('amount');
-        
-        if (itemParam && amountParam) {
-            // Add to cart from URL
-            window.addEventListener('DOMContentLoaded', function() {
-                addToCart(itemParam.replace(/\+/g, ' '), amountParam);
-            });
-        } else if (cart.length > 0) {
-            // Show existing cart
-            window.addEventListener('DOMContentLoaded', function() {
-                showCart();
-            });
-        }
-        
-        // Replace selectCrypto to update conversion
-        const originalSelectCrypto = window.selectCrypto;
-        window.selectCrypto = function(crypto) {
-            selectedCrypto = crypto;
-            showCryptoConversion();
-            
-            const w = wallets[crypto];
-            if (!w) return;
-            
-            document.getElementById('cryptoTitle').textContent = w.name;
-            document.getElementById('walletAddress').textContent = w.address;
-            
-            const qrDiv = document.getElementById('qrcode');
-            qrDiv.innerHTML = '';
-            if (typeof QRCode !== 'undefined') {
-                QRCode.toCanvas(document.createElement('canvas'), w.address, { width: 180 }, function(err, canvas) {
-                    if (!err) qrDiv.appendChild(canvas);
-                });
-            }
-            
-            document.querySelectorAll('.payment-card').forEach(card => {
-                card.classList.remove('selected');
-                if (card.getAttribute('onclick')?.includes(crypto)) {
-                    card.classList.add('selected');
-                }
-            });
-        };
-        
-                const wallets = {
+        const wallets = {
             'BTC': { address: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh', name: 'Bitcoin' },
             'ETH': { address: '0x4A2dC53D8d8f0FE9F4b7e0f0f7e4f0f7e4f0f7e', name: 'Ethereum' },
             'USDC': { address: '0x4A2dC53D8d8f0FE9F4b7e0f0f7e4f0f7e4f0f7e', name: 'USD Coin' },
