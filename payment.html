@@ -81,6 +81,72 @@
                 orderAmount.textContent = '$' + amount;
             }
         });
+
+        <script>
+        // Cart management with localStorage
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        
+        function updateCartDisplay() {
+            const mainCartSummary = document.getElementById('mainCartSummary');
+            const mainTotal = document.getElementById('mainTotal');
+            const orderItem = document.getElementById('orderItem');
+            const orderAmount = document.getElementById('orderAmount');
+            
+            if (cart.length === 0) {
+                if (mainCartSummary) mainCartSummary.innerHTML = '<p style="color: var(--muted);">No items in cart</p>';
+                if (mainTotal) mainTotal.textContent = '0';
+                if (orderItem) orderItem.innerHTML = '<div class="order-item-line">No items</div>';
+                if (orderAmount) orderAmount.textContent = '$0';
+                return;
+            }
+            
+            // Build itemized list
+            let itemHtml = '<ul>';
+            let total = 0;
+            cart.forEach((item, index) => {
+                itemHtml += '<li><span>' + item.name + '</span><span>$' + item.price + ' <button onclick="removeFromCart(' + index + ')" style="background:none;border:none;color:#f97316;cursor:pointer;margin-left:8px;">✕</button></span></li>';
+                total += parseFloat(item.price);
+            });
+            itemHtml += '</ul>';
+            
+            if (mainCartSummary) mainCartSummary.innerHTML = itemHtml;
+            if (mainTotal) mainTotal.textContent = total.toFixed(2);
+            if (orderItem) orderItem.innerHTML = itemHtml;
+            if (orderAmount) orderAmount.textContent = '$' + total.toFixed(2);
+        }
+        
+        function addToCart(name, price) {
+            cart.push({ name: name, price: price });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+        
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+        
+        function clearCart() {
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+        
+        // Check URL params and add to cart on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const itemParam = urlParams.get('item');
+            const amountParam = urlParams.get('amount');
+            
+            if (itemParam && amountParam) {
+                // Add to cart from URL params
+                addToCart(itemParam.replace(/\+/g, ' '), amountParam);
+            } else if (cart.length > 0) {
+                // Show existing cart
+                updateCartDisplay();
+            }
+        });
         </script>
 
     <style>
@@ -179,7 +245,7 @@
         .thank-you-box p { color: var(--muted); margin-bottom: 20px; }
         .thank-you-box .cart-summary { text-align: left; margin: 20px 0; }
         .thank-you-box .cart-summary ul { list-style: none; padding: 0; }
-        .thank-you-box .cart-summary li { padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+        .thank-you-box .cart-summary li { padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .thank-you-box .cart-total { font-size: 1.5rem; font-weight: 700; color: #228B22; margin: 20px 0; }
         .thank-you-box .continue-btn { display: inline-block; padding: 12px 24px; background: #22d3ee; color: #000; border-radius: 8px; font-weight: 600; }
         .cart-buttons { display: flex; gap: 12px; justify-content: center; }
