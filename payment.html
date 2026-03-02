@@ -173,6 +173,15 @@
         .cart-summary ul { list-style: none; padding: 0; }
         .cart-summary li { padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--text); }
         .cart-popup .cart-total { font-size: 1.5rem; font-weight: 700; color: #228B22; margin-bottom: 24px; }
+        .thank-you-section { padding: 40px 0; }
+        .thank-you-box { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 32px; max-width: 600px; margin: 0 auto; text-align: center; }
+        .thank-you-box h2 { color: #228B22; font-size: 2rem; margin-bottom: 8px; }
+        .thank-you-box p { color: var(--muted); margin-bottom: 20px; }
+        .thank-you-box .cart-summary { text-align: left; margin: 20px 0; }
+        .thank-you-box .cart-summary ul { list-style: none; padding: 0; }
+        .thank-you-box .cart-summary li { padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+        .thank-you-box .cart-total { font-size: 1.5rem; font-weight: 700; color: #228B22; margin: 20px 0; }
+        .thank-you-box .continue-btn { display: inline-block; padding: 12px 24px; background: #22d3ee; color: #000; border-radius: 8px; font-weight: 600; }
         .cart-buttons { display: flex; gap: 12px; justify-content: center; }
         .continue-btn { padding: 12px 24px; background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; text-decoration: none; }
         .pay-btn { padding: 12px 24px; background: #36454F; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: 600; }
@@ -330,6 +339,21 @@
         </div>
     </div>
     
+    <!-- Thank You / Cart Section -->
+    <section class="thank-you-section">
+        <div class="container">
+            <div class="thank-you-box">
+                <h2>Thank You!</h2>
+                <p>Your order is ready.</p>
+                <div class="cart-summary" id="mainCartSummary"></div>
+                <div class="cart-total">Total: $<span id="mainTotal">0</span></div>
+                <div class="cart-buttons">
+                    <a href="/" class="continue-btn">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="container">
         <div class="page-title">
             <h1>Complete Your Order</h1>
