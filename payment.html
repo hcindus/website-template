@@ -211,6 +211,7 @@
             <div class="cart-total">Total: $<span id="popupTotal">0</span></div>
             <div class="cart-buttons">
                 <a href="/" class="continue-btn">Continue Shopping</a>
+                <span style="width: 12px; display: inline-block;"></span>
                 <button class="pay-btn" onclick="processPayment()">Pay Now</button>
             </div>
         </div>
@@ -296,7 +297,8 @@
         </div>
     </header>
     
-    <!-- AI Chat Button -->
+    <!-- Cart Popup -->
+    <div class="cart-popup" id="cartPopup">
     <div class="ai-chat-btn" onclick="toggleChat()">💬</div>
     
     <!-- Chat Dialog -->
