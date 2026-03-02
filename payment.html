@@ -837,6 +837,11 @@
         
         // Clear URL params
         window.history.replaceState({}, document.title, window.location.pathname);
+        
+        // Reload to ensure clean state
+        setTimeout(function() {
+            window.location.href = "/payment.html";
+        }, 100);
     }
     
     window.addEventListener("DOMContentLoaded", function() {
