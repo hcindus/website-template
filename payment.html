@@ -821,6 +821,13 @@
         cart = [];
         localStorage.setItem("paymentCart", JSON.stringify(cart));
         updateCartDisplay();
+        
+        // Clear crypto amount display
+        var cryptoDisplay = document.getElementById("cryptoAmountDisplay");
+        if (cryptoDisplay) cryptoDisplay.textContent = "";
+        
+        // Clear URL params so page doesn't reload items
+        window.history.replaceState({}, document.title, window.location.pathname);
     }
     
     window.addEventListener("DOMContentLoaded", function() {
