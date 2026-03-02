@@ -247,8 +247,6 @@
         .chat-input button { padding: 10px 16px; background: var(--accent); border: none; border-radius: 8px; color: var(--bg); font-weight: 600; cursor: pointer; }
     
             @media (max-width: 768px) {
-                .mobile-menu-btn { display: block; }
-            .container { padding: 0 16px; }
             .page-title { padding: 40px 0 30px; }
             .page-title h1 { font-size: 1.8rem; }
             .contact-grid { grid-template-columns: 1fr; gap: 20px; }
@@ -259,32 +257,6 @@
             }
         }
 
-        .mobile-menu-btn { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
-        .mobile-nav { display: none; position: fixed; top: 60px; left: 0; right: 0; background: #0d0d0d; border-bottom: 1px solid #1f1f1f; padding: 20px; z-index: 99; flex-direction: column; gap: 12px; }
-        .mobile-nav.open { display: flex; }
-        .mobile-nav a { color: #fff; font-size: 1.1rem; padding: 12px; border-bottom: 1px solid #1f1f1f; text-decoration: none; }
-        .mobile-nav a:hover { color: #228B22; }
-
-    </style>
-</head>
-<body>
-
-    <div class="ai-chat-btn" onclick="toggleChat()">💬</div>
-    <div class="chat-dialog" id="chatDialog">
-        <div class="chat-header">
-            <h3>🤖 AGI Company Assistant</h3>
-            <button class="chat-close" onclick="toggleChat()">✕</button>
-        </div>
-        <div class="chat-messages" id="chatMessages">
-            <div class="chat-msg bot">Hi! I'm here to help. What would you like to know about AGI Company?</div>
-        </div>
-        <div class="chat-input">
-            <input type="text" id="chatInput" placeholder="Ask me anything..." onkeypress="if(event.key=='Enter')sendMessage()">
-            <button onclick="sendMessage()">Send</button>
-        </div>
-    </div>
-        <script>
-        function toggleChat() { document.getElementById('chatDialog').classList.toggle('open'); }
         function sendMessage() {
             const input = document.getElementById('chatInput');
             const msg = input.value.trim();
@@ -358,7 +330,7 @@
         <header>
         <div class="container">
             <a href="/" class="logo" style="text-decoration:none"><span>AGI</span> Company</a>
-                                                            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+                                                            
             <nav>
                 <a href="/">Home</a>
                 <a href="/agents.html">Agents</a>
@@ -368,27 +340,8 @@
                 <a href="/payment.html">Payment</a>
                 <a href="https://tappylewis.cloud">Tappy Lewis</a>
     
-    <div class="mobile-nav" id="mobileNav">
-        <a href="/">Home</a>
-        <a href="/agents.html">Agents</a>
-        <a href="/software.html">Software</a>
-        <a href="/services.html">Services</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/payment.html">Payment</a>
-        <a href="https://tappylewis.cloud">Tappy Lewis</a>
-            </nav>
-        </div>
     </header>
     
-    <div class="mobile-nav" id="mobileNav">
-        <a href="/">Home</a>
-        <a href="/agents.html">Agents</a>
-        <a href="/software.html">Software</a>
-        <a href="/services.html">Services</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/payment.html">Payment</a>
-        <a href="https://tappylewis.cloud">Tappy Lewis</a>
-    </div>
     
     <section class="page-title">
         <div class="container">

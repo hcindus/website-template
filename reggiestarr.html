@@ -48,10 +48,6 @@
         .cart-continue-btn { display: block; width: 100%; padding: 12px; background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; cursor: pointer; }
 
         @media (max-width: 768px) {
-            .mobile-menu-btn { display: block; }
-            .mobile-nav { display: none; }
-            .mobile-nav.open { display: flex; }
-            .container { padding: 0 16px; }
             .page-title { padding: 40px 0 30px; }
             .page-title h1 { font-size: 1.8rem; }
             .page-title p { font-size: 1rem; }
@@ -68,108 +64,6 @@
         }
 
 
-        .mobile-menu-btn { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; padding: 8px; }
-        .mobile-nav { display: none; position: fixed; top: 70px; left: 0; right: 0; background: #0d0d0d; border-bottom: 1px solid #1f1f1f; padding: 20px; z-index: 99; flex-direction: column; gap: 12px; }
-        .mobile-nav.open { display: flex; }
-        .mobile-nav a { color: #fff; font-size: 1.1rem; padding: 12px; border-bottom: 1px solid #1f1f1f; text-decoration: none; }
-        .mobile-nav a:hover { color: #228B22; }
-
-</style>
-</head>
-<body>
-    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
-    <div class="mobile-nav" id="mobileNav">
-        <a href="/">Home</a>
-        <a href="/agents.html">Agents</a>
-        <a href="/software.html">Software</a>
-        <a href="/services.html">Services</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/payment.html">Payment</a>
-        <a href="https://tappylewis.cloud">Tappy Lewis</a>
-    </div>
-
-
-    </div>
-
-    <a href="/contact.html?item=ReggieStarr&amount=49" class="consult-btn">Book a Consultation</a>
-    <a href="/software.html" class="back-btn">← Back</a>
-    <header>
-        <div class="icon">📱</div>
-        <h1>ReggieStarr</h1>
-        <div class="tagline">Point of Sale, Evolved</div>
-    </header>
-    <section>
-        <div class="container">
-            <h2>The Problem</h2>
-            <p>Traditional POS systems are expensive, clunky, and require dedicated hardware. Small businesses need:</p>
-            <ul>
-                <li>Expensive proprietary hardware ($500-2000+)</li>
-                <li>Monthly subscription fees ($50-200/mo)</li>
-                <li>Complex setup requiring technicians</li>
-                <li>Limited to single currency/language</li>
-                <li>No real-time analytics</li>
-            </ul>
-        </div>
-    </section>
-    <section>
-        <div class="container">
-            <h2>Our Solution</h2>
-            <p>ReggieStarr is a modern POS that runs on any device—tablet, phone, or dedicated RS-79 hardware. Cloud-based, affordable, and packed with AI features.</p>
-            <div class="highlight"><strong>No expensive hardware required.</strong> Use what you already have, or upgrade to our certified terminal.</div>
-            <ul>
-                <li>Cloud-based - access from any device, anywhere</li>
-                <li>Real-time inventory management</li>
-                <li>Multi-language support (8 languages)</li>
-                <li>Multi-currency support (17 currencies)</li>
-                <li>Real-time sales analytics & insights</li>
-                <li>RS-79 certified hardware terminal</li>
-            </ul>
-        </div>
-    </section>
-    <section>
-        <div class="container">
-            <h2>Our Philosophy</h2>
-            <p>POS shouldn't require a computer science degree. We believe in:</p>
-            <ul>
-                <li><strong>Simplicity first</strong> — If it's not intuitive, it's wrong</li>
-                <li><strong>Pay for value</strong> — No hidden fees, no lock-in</li>
-                <li><strong>AI as assistant</strong> — Smart suggestions, not just spreadsheets</li>
-                <li><strong>Global by default</strong> — Every business is international</li>
-            </ul>
-        </div>
-    </section>
-    <section>
-        <div class="container">
-            <h2>Testing & Results</h2>
-            <div class="stats">
-                <div class="stat"><div class="number">17</div><div class="label">Currencies</div></div>
-                <div class="stat"><div class="number">8</div><div class="label">Languages</div></div>
-                <div class="stat"><div class="number">99.9%</div><div class="label">Uptime</div></div>
-            </div>
-            <ul>
-                <li>Beta tested with 50+ small businesses</li>
-                <li>RS-79 hardware certified for compliance</li>
-                <li>PCI-DSS compliant payment processing</li>
-                <li>Zero downtime in 6-month stress test</li>
-            </ul>
-        </div>
-    </section>
-    <div class="cta" style="text-align:center;padding:40px 0;"><a href="/payment.html?item=ReggieStarr&amount=49" class="order-btn" style="display:inline-block;padding:16px 40px;background:#228B22;color:#ffffff;font-weight:600;border-radius:8px;text-decoration:none;">Buy Now - $49/mo</a></div>
-
-    <footer><p>© 2026 AGI Company</p></footer>
-
-    <div class="cart-btn" onclick="toggleCart()">🛒 <span id="cartCount">0</span></div>
-    <div class="cart-dialog" id="cartDialog">
-        <div class="cart-header"><h3>Shopping Cart</h3><button onclick="toggleCart()">✕</button></div>
-        <div class="cart-items" id="cartItems"><p class="empty-cart">Your cart is empty</p></div>
-        <div class="cart-footer">
-            <div class="cart-total">Total: $<span id="cartTotal">0</span></div>
-            <a href="/payment.html" class="cart-pay-btn" id="cartPayBtn">Pay Now</a>
-            <button class="cart-continue-btn" onclick="toggleCart()">Continue Shopping</button>
-        </div>
-    </div>
-    <script>
-    function toggleCart() { document.getElementById('cartDialog').classList.toggle('open'); }
     function addToCart(name, price) { let cart = JSON.parse(localStorage.getItem('cart') || '[]'); cart.push({name, price}); localStorage.setItem('cart', JSON.stringify(cart)); updateCartDisplay(); }
     function removeFromCart(index) { let cart = JSON.parse(localStorage.getItem('cart') || '[]'); cart.splice(index, 1); localStorage.setItem('cart', JSON.stringify(cart)); updateCartDisplay(); }
     function updateCartDisplay() { let cart = JSON.parse(localStorage.getItem('cart') || '[]'); document.getElementById('cartCount').textContent = cart.length; let total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0); document.getElementById('cartTotal').textContent = total.toFixed(2); let itemsHtml = cart.length === 0 ? '<p class="empty-cart">Your cart is empty</p>' : cart.map((item, i) => '<div class="cart-item"><span>' + item.name + '</span><span>$' + item.price + ' <button onclick="removeFromCart(' + i + ')">✕</button></span></div>').join(''); document.getElementById('cartItems').innerHTML = itemsHtml; if (cart.length > 0) { let itemNames = cart.map(i => i.name).join(', '); let itemPrices = cart.map(i => i.price).join(','); document.getElementById('cartPayBtn').href = '/payment.html?items=' + encodeURIComponent(itemNames) + '&total=' + total.toFixed(2); } }

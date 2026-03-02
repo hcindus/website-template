@@ -50,47 +50,9 @@
             align-items: center;
         }
         
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 8px;
-        }
         
-        .mobile-nav {
-            display: none;
-            position: fixed;
-            top: 60px;
-            left: 0;
-            right: 0;
-            background: rgba(13,13,13,0.98);
-            border-bottom: 1px solid var(--border);
-            padding: 20px;
-            z-index: 99;
-            flex-direction: column;
-            gap: 12px;
-        }
         
-        .mobile-nav.open { display: flex; }
         
-        .mobile-nav a {
-            color: var(--text);
-            font-size: 1.1rem;
-            padding: 12px;
-            border-bottom: 1px solid var(--border);
-            text-decoration: none;
-        }
-        
-        .mobile-nav a:hover { color: var(--accent); }
-        
-        .logo {
-            font-size: 1.25rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-        }
         
         .logo span { color: #a855f7; }
         
@@ -240,6 +202,12 @@
         .chat-input input { flex: 1; padding: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 0.9rem; }
         .chat-input button { padding: 10px 16px; background: var(--accent); border: none; border-radius: 8px; color: var(--bg); font-weight: 600; cursor: pointer; }
     
+        .lang-selector { position: fixed; top: 20px; right: 20px; z-index: 9999; }
+        .lang-current { background: #36454F; border: 2px solid #555; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .lang-menu { display: none; position: absolute; top: 100%; right: 0; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; overflow: hidden; margin-top: 4px; min-width: 150px; }
+        .lang-menu.open { display: block; }
+        .lang-menu button { display: block; width: 100%; padding: 10px 16px; background: none; border: none; color: white; text-align: left; cursor: pointer; }
+        .lang-menu button:hover { background: #333; }
         .lang-dialog { position: fixed; top: 70px; right: 20px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; display: none; z-index: 1001; }
         .lang-dialog.open { display: block; }
         .lang-dialog button { display: block; width: 100%; padding: 12px 20px; background: none; border: none; color: var(--text); text-align: left; cursor: pointer; border-bottom: 1px solid var(--border); }
@@ -274,10 +242,6 @@
 
         @media (max-width: 768px) {
             nav { display: none; }
-            .mobile-menu-btn { display: block; }
-            .mobile-nav { display: none; }
-            .mobile-nav.open { display: flex; }
-            .container { padding: 0 16px; }
             .hero { padding: 60px 20px; }
             .hero h1 { font-size: 2rem; }
             .hero p { font-size: 1rem; }
@@ -289,6 +253,8 @@
             .stats-row { flex-wrap: wrap; gap: 20px; }
             .cta-buttons { flex-direction: column; gap: 12px; }
             .cta-buttons a { width: 100%; text-align: center; }
+            .lang-selector { top: 10px; right: 10px; }
+            .lang-current { padding: 6px 12px; font-size: 0.85rem; }
             footer { padding: 30px 16px; }
             .ai-chat-widget { bottom: 10px; right: 10px; }
             .payment-cards { grid-template-columns: 1fr; }
@@ -327,8 +293,228 @@
     </div>
     
     <script>
+    const translations = {
+        en: {
+            "welcome": "Welcome to AGI Company",
+            "subtitle": "Autonomous AI Operations",
+            "agents": "Our Agents",
+            "software": "Software",
+            "services": "Services",
+            "contact": "Contact",
+            "payment": "Payment",
+            "about": "About Us",
+            "meet_team": "Meet Our Team",
+            "our_software": "Our Software",
+            "team_desc": "The autonomous agents powering your success",
+            "view_all": "View All Agents →",
+            "hero_title": "Autonomous Operations for Modern Business",
+            "hero_desc": "We build AI-powered agents that work 24/7 to grow your business",
+            "Professional Services": "Professional Services",
+            "AGI Company Assistant": "AGI Company Assistant",
+            "AI Strategy Consulting": "AI Strategy Consulting",
+            "Custom Agent Development": "Custom Agent Development",
+            "System Integration": "System Integration",
+            "24/7 Agent Support": "24/7 Agent Support",
+            "Training & Enablement": "Training & Enablement",
+            "Security Audit": "Security Audit",
+            "Performance Analytics": "Performance Analytics",
+            "Emergency Response": "Emergency Response"
+        },
+        es: {
+            "welcome": "Bienvenido a AGI Company",
+            "subtitle": "Operaciones IA Autónomas",
+            "agents": "Nuestros Agentes",
+            "software": "Software",
+            "services": "Servicios",
+            "contact": "Contacto",
+            "payment": "Pago",
+            "about": "Sobre Nosotros",
+            "meet_team": "Conoce a Nuestro Equipo",
+            "our_software": "Nuestro Software",
+            "team_desc": "Los agentes autónomos que impulsan tu éxito",
+            "view_all": "Ver Todos los Agentes →",
+            "hero_title": "Operaciones Autónomas para Negocios Modernos",
+            "hero_desc": "Construimos agentes impulsados por IA que trabajan 24/7 para hacer crecer tu negocio",
+            "Professional Services": "Servicios Profesionales",
+            "AGI Company Assistant": "Asistente AGI Company",
+            "AI Strategy Consulting": "Consultoría de Estrategia IA",
+            "Custom Agent Development": "Desarrollo de Agentes Personalizados",
+            "System Integration": "Integración de Sistemas",
+            "24/7 Agent Support": "Soporte de Agentes 24/7",
+            "Training & Enablement": "Capacitación",
+            "Security Audit": "Auditoría de Seguridad",
+            "Performance Analytics": "Análisis de Rendimiento",
+            "Emergency Response": "Respuesta de Emergencia"
+        },
+        fr: {
+            "welcome": "Bienvenue chez AGI Company",
+            "subtitle": "Opérations IA Autonomes",
+            "agents": "Nos Agents",
+            "software": "Logiciel",
+            "services": "Services",
+            "contact": "Contact",
+            "payment": "Paiement",
+            "about": "À Propos",
+            "meet_team": "Rencontrez Notre Équipe",
+            "our_software": "Notre Logiciel",
+            "team_desc": "Les agents autonomes qui alimentent votre succès",
+            "view_all": "Voir Tous les Agents →",
+            "hero_title": "Opérations Autonomes pour Entreprises Modernes",
+            "hero_desc": "Nous construisons des agents IA qui fonctionnent 24h/24 pour développer votre entreprise",
+            "Professional Services": "Services Professionnels",
+            "AGI Company Assistant": "Assistant AGI Company",
+            "AI Strategy Consulting": "Conseil en Stratégie IA",
+            "Custom Agent Development": "Développement d'Agents Personnalisés",
+            "System Integration": "Intégration Système",
+            "24/7 Agent Support": "Support Agents 24/7",
+            "Training & Enablement": "Formation",
+            "Security Audit": "Audit de Sécurité",
+            "Performance Analytics": "Analyse de Performance",
+            "Emergency Response": "Réponse d'Urgence"
+        },
+        de: {
+            "welcome": "Willkommen bei AGI Company",
+            "subtitle": "Autonome KI-Operationen",
+            "agents": "Unsere Agenten",
+            "software": "Software",
+            "services": "Dienstleistungen",
+            "contact": "Kontakt",
+            "payment": "Zahlung",
+            "about": "Über Uns",
+            "meet_team": "Lernen Sie Unser Team Kennen",
+            "our_software": "Unsere Software",
+            "team_desc": "Die autonomen Agenten, die Ihren Erfolg vorantreiben",
+            "view_all": "Alle Agenten Ansehen →",
+            "hero_title": "Autonome Operationen für Moderne Unternehmen",
+            "hero_desc": "Wir bauen KI-gestützte Agenten, die rund um die Uhr arbeiten, um Ihr Unternehmen zu fördern",
+            "Professional Services": "Professionelle Dienste",
+            "AGI Company Assistant": "AGI Company Assistent",
+            "AI Strategy Consulting": "KI-Strategieberatung",
+            "Custom Agent Development": "Agent-Entwicklung",
+            "System Integration": "Systemintegration",
+            "24/7 Agent Support": "24/7 Agent-Support",
+            "Training & Enablement": "Schulung",
+            "Security Audit": "Sicherheitsaudit",
+            "Performance Analytics": "Leistungsanalyse",
+            "Emergency Response": "Notfallreaktion"
+        },
+        it: {
+            "welcome": "Benvenuto in AGI Company",
+            "subtitle": "Operazioni IA Autonome",
+            "agents": "I Nostri Agenti",
+            "software": "Software",
+            "services": "Servizi",
+            "contact": "Contatto",
+            "payment": "Pagamento",
+            "about": "Chi Siamo",
+            "meet_team": "Incontra il Nostro Team",
+            "our_software": "Nostro Software",
+            "team_desc": "Gli agenti autonomi che alimentano il tuo successo",
+            "view_all": "Vedi Tutti gli Agenti →",
+            "hero_title": "Operazioni Autonome per Business Moderni",
+            "hero_desc": "Costruiamo agenti IA che lavorano 24/7 per far crescere la tua attività",
+            "Professional Services": "Servizi Professionali",
+            "AGI Company Assistant": "Assistente AGI Company",
+            "AI Strategy Consulting": "Consulenza Strategia IA",
+            "Custom Agent Development": "Sviluppo Agenti Personalizzati",
+            "System Integration": "Integrazione Sistema",
+            "24/7 Agent Support": "Supporto Agenti 24/7",
+            "Training & Enablement": "Formazione",
+            "Security Audit": "Audit Sicurezza",
+            "Performance Analytics": "Analisi Performance",
+            "Emergency Response": "Risposta Emergenza"
+        },
+        pt: {
+            "welcome": "Bem-vindo à AGI Company",
+            "subtitle": "Operações IA Autônomas",
+            "agents": "Nossos Agentes",
+            "software": "Software",
+            "services": "Serviços",
+            "contact": "Contato",
+            "payment": "Pagamento",
+            "about": "Sobre Nós",
+            "meet_team": "Conheça Nossa Equipe",
+            "our_software": "Nosso Software",
+            "team_desc": "Os agentes autônomos que impulsionam seu sucesso",
+            "view_all": "Ver Todos os Agentes →",
+            "hero_title": "Operações Autônomas para Negócios Modernos",
+            "hero_desc": "Construímos agentes de IA que trabalham 24/7 para fazer seu negócio crescer",
+            "Professional Services": "Serviços Profissionais",
+            "AGI Company Assistant": "Assistente AGI Company",
+            "AI Strategy Consulting": "Consultoria Estratégia IA",
+            "Custom Agent Development": "Desenvolvimento de Agentes",
+            "System Integration": "Integração de Sistemas",
+            "24/7 Agent Support": "Suporte 24/7",
+            "Training & Enablement": "Treinamento",
+            "Security Audit": "Auditoria de Segurança",
+            "Performance Analytics": "Análise de Desempenho",
+            "Emergency Response": "Resposta de Emergência"
+        },
+        ja: {
+            "welcome": "AGI Companyへようこそ",
+            "subtitle": "自律型AIオペレーション",
+            "agents": "エージェント",
+            "software": "ソフトウェア",
+            "services": "サービス",
+            "contact": "お問い合わせ",
+            "payment": "お支払い",
+            "about": "会社概要",
+            "meet_team": "チームを紹介",
+            "our_software": "ソフトウェア",
+            "team_desc": "あなたの成功を動かす自律型エージェント",
+            "view_all": "すべてのエージェントを見る →",
+            "hero_title": "モダンなビジネス向け自律型オペレーション",
+            "hero_desc": "あなたのビジネスを成長させる24時間365日稼働のAIエージェントを構築",
+            "Professional Services": "プロフェッショナルサービス",
+            "AGI Company Assistant": "AGI会社アシスタント",
+            "AI Strategy Consulting": "AI戦略コンサルティング",
+            "Custom Agent Development": "カスタムエージェント開発",
+            "System Integration": "システム統合",
+            "24/7 Agent Support": "24時間エージェントサポート",
+            "Training & Enablement": "トレーニング",
+            "Security Audit": "セキュリティ監査",
+            "Performance Analytics": "パフォーマンス分析",
+            "Emergency Response": "緊急対応"
+        },
+        zh: {
+            "welcome": "欢迎来到AGI公司",
+            "subtitle": "自主AI运营",
+            "agents": "我们的代理",
+            "software": "软件",
+            "services": "服务",
+            "contact": "联系方式",
+            "payment": "付款",
+            "about": "关于我们",
+            "meet_team": "认识我们的团队",
+            "our_software": "我们的软件",
+            "team_desc": "推动您成功的自主代理",
+            "view_all": "查看所有代理 →",
+            "hero_title": "现代企业的自主运营",
+            "hero_desc": "我们构建全天候工作的AI代理来发展您的业务",
+            "Professional Services": "专业服务",
+            "AGI Company Assistant": "AGI公司助手",
+            "AI Strategy Consulting": "AI战略咨询",
+            "Custom Agent Development": "定制代理开发",
+            "System Integration": "系统集成",
+            "24/7 Agent Support": "全天候代理支持",
+            "Training & Enablement": "培训",
+            "Security Audit": "安全审计",
+            "Performance Analytics": "性能分析",
+            "Emergency Response": "应急响应"
+        }
+    };
     
+    function toggleLangMenu() { document.getElementById("langMenu").classList.toggle("open"); }
     
+    function toggleMobileMenu() { document.getElementById("mobileNav").classList.toggle("open"); }
+    
+    function changeLang(code, flag, name) {
+        localStorage.setItem("lang", code);
+        document.querySelector(".lang-flag").textContent = flag;
+        document.querySelector(".lang-name").textContent = name;
+        document.getElementById("langMenu").classList.remove("open");
+        applyTranslations(code);
+    }
     
     function applyTranslations(code) {
         const t = translations[code];
@@ -358,6 +544,8 @@
     // Load saved language on page load
     window.addEventListener("DOMContentLoaded", function() {
         const saved = localStorage.getItem("lang") || "en";
+        const langFlags = { en: "🇺🇸", es: "🇪🇸", fr: "🇫🇷", de: "🇩🇪", it: "🇮🇹", pt: "🇵🇹", ja: "🇯🇵", zh: "🇨🇳" };
+        const langNames = { en: "English", es: "Español", fr: "Français", de: "Deutsch", it: "Italiano", pt: "Português", ja: "日本語", zh: "中文" };
         
         if (translations[saved]) {
             document.querySelector(".lang-flag").textContent = langFlags[saved];
@@ -406,6 +594,8 @@ ssList.toggle('open'); }$
         localStorage.setItem('lang', lang); 
         toggleLang(); 
         applyTranslations(lang);
+        const langFlags = { en: "🇺🇸", es: "🇪🇸", fr: "🇫🇷", de: "🇩🇪", it: "🇮🇹", pt: "🇵🇹", ja: "🇯🇵", zh: "🇨🇳" };
+        const langNames = { en: "English", es: "Español", fr: "Français", de: "Deutsch", it: "Italiano", pt: "Português", ja: "日本語", zh: "中文" };
         if (document.querySelector(".lang-flag")) document.querySelector(".lang-flag").textContent = langFlags[lang];
         if (document.querySelector(".lang-name")) document.querySelector(".lang-name").textContent = langNames[lang];
     }
@@ -500,7 +690,7 @@ ssList.toggle('open'); }$
         <header>
         <div class="container">
             <a href="/" class="logo" style="text-decoration:none"><span>AGI</span> Company</a>
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            
             <nav>
                 <a href="/">Home</a>
                 <a href="/agents.html">Agents</a>
@@ -513,15 +703,6 @@ ssList.toggle('open'); }$
         </div>
     </header>
     
-    <div class="mobile-nav" id="mobileNav">
-        <a href="/">Home</a>
-        <a href="/agents.html">Agents</a>
-        <a href="/software.html">Software</a>
-        <a href="/services.html">Services</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/payment.html">Payment</a>
-        <a href="https://tappylewis.cloud">Tappy Lewis</a>
-    </div>
     
     <section class="page-title">
         <div class="container">

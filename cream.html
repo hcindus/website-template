@@ -52,10 +52,6 @@
         .cart-continue-btn { display: block; width: 100%; padding: 12px; background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; cursor: pointer; }
 
         @media (max-width: 768px) {
-            .mobile-menu-btn { display: block; }
-            .mobile-nav { display: none; }
-            .mobile-nav.open { display: flex; }
-            .container { padding: 0 16px; }
             .page-title { padding: 40px 0 30px; }
             .page-title h1 { font-size: 1.8rem; }
             .page-title p { font-size: 1rem; }
@@ -72,123 +68,6 @@
         }
 
 
-        .mobile-menu-btn { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; padding: 8px; }
-        .mobile-nav { display: none; position: fixed; top: 70px; left: 0; right: 0; background: #0d0d0d; border-bottom: 1px solid #1f1f1f; padding: 20px; z-index: 99; flex-direction: column; gap: 12px; }
-        .mobile-nav.open { display: flex; }
-        .mobile-nav a { color: #fff; font-size: 1.1rem; padding: 12px; border-bottom: 1px solid #1f1f1f; text-decoration: none; }
-        .mobile-nav a:hover { color: #228B22; }
-
-</style>
-</head>
-<body>
-    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
-    <div class="mobile-nav" id="mobileNav">
-        <a href="/">Home</a>
-        <a href="/agents.html">Agents</a>
-        <a href="/software.html">Software</a>
-        <a href="/services.html">Services</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/payment.html">Payment</a>
-        <a href="https://tappylewis.cloud">Tappy Lewis</a>
-    </div>
-
-
-    </div>
-
-    <a href="/contact.html?item=CREAM&amount=699" class="consult-btn">Book a Consultation</a>
-    <a href="/software.html" class="back-btn">← Back</a>
-    <header>
-        <div class="icon">🏠</div>
-        <h1>CREAM</h1>
-        <div class="tagline">Comprehensive Real Estate Agent Management</div>
-    </header>
-    <section>
-        <div class="container">
-            <h2>The Problem</h2>
-            <p>Real estate agents are overwhelmed by fragmented tools. To run a successful business, they need:</p>
-            <ul>
-                <li>CRM for lead management ($49/mo)</li>
-                <li>Marketing automation for outreach ($79/mo)</li>
-                <li>Financial trackers for revenue ($29/mo)</li>
-                <li>Farming tools for community targeting ($39/mo)</li>
-                <li>Analytics for performance ($25/mo)</li>
-                <li>Appointment and follow-up systems ($15/mo)</li>
-            </ul>
-            <div class="savings">Total: $236/month = $2,832/year</div>
-        </div>
-    </section>
-    <section>
-        <div class="container">
-            <h2>Our Solution</h2>
-            <p>CREAM consolidates everything into ONE intuitive mobile app. Replace your entire tool stack for one simple price.</p>
-            <div class="highlight"><strong>$699 one-time + $99/year</strong> = Save $2,832+ every year</div>
-            <ul>
-                <li>Plan Your Business - Set and track quarterly goals</li>
-                <li>Build & Touch Database - Centralize all contacts</li>
-                <li>Add to Database - Easy lead entry</li>
-                <li>Farm Communities - Geo-targeted campaigns</li>
-                <li>Evaluate Performance - Analytics dashboard</li>
-                <li>Track Revenue & Profit - Commission monitoring</li>
-                <li>P&L Statements - Tax-ready reports</li>
-                <li>Letter Generator - Personalized outreach</li>
-                <li>Appointment Tracker - "Did you land it?" follow-ups</li>
-                <li>Database Analysis - AI-powered insights</li>
-            </ul>
-        </div>
-    </section>
-    <section>
-        <div class="container">
-            <h2>Our Philosophy</h2>
-            <p>Real estate agents should sell houses, not manage software. We believe in:</p>
-            <ul>
-                <li><strong>One app, everything</strong> — No more logging into 6 different services</li>
-                <li><strong>Pay once, own forever</strong> — No monthly subscriptions</li>
-                <li><strong>Mobile-first</strong> — Work from anywhere</li>
-                <li><strong>AI-assisted</strong> — Smart suggestions, not just forms</li>
-            </ul>
-        </div>
-    </section>
-    <section>
-        <div class="container">
-            <h2>Market Opportunity</h2>
-            <div class="stats">
-                <div class="stat"><div class="number">1.55M</div><div class="label">US Realtors</div></div>
-                <div class="stat"><div class="number">$46M+</div><div class="label">Potential Revenue</div></div>
-                <div class="stat"><div class="number">10%</div><div class="label">Target Adoption</div></div>
-            </div>
-        </div>
-    </section>
-    <section>
-        <div class="container">
-            <h2>Testing & Results</h2>
-            <table>
-                <tr><th>Traditional Stack</th><th>Monthly</th><th>CREAM</th><th>Savings</th></tr>
-                <tr><td>CRM (Zoho/HubSpot)</td><td>$49</td><td>Included</td><td>-$49</td></tr>
-                <tr><td>Marketing (Mailchimp)</td><td>$79</td><td>Included</td><td>-$79</td></tr>
-                <tr><td>Financial (QuickBooks)</td><td>$29</td><td>Included</td><td>-$29</td></tr>
-                <tr><td>Farming (Mauve)</td><td>$39</td><td>Included</td><td>-$39</td></tr>
-                <tr><td>Landing Pages</td><td>$25</td><td>Included</td><td>-$25</td></tr>
-                <tr><td>Scheduler (Calendly)</td><td>$15</td><td>Included</td><td>-$15</td></tr>
-            </table>
-            <div class="savings">Annual Savings: $2,832+</div>
-        </div>
-    </section>
-    <div class="cta" style="text-align:center;padding:40px 0;"><a href="/payment.html?item=CREAM&amount=699" class="order-btn" style="display:inline-block;padding:16px 40px;background:#228B22;color:#ffffff;font-weight:600;border-radius:8px;text-decoration:none;">Buy Now - $699</a></div>
-
-    <footer><p>© 2026 AGI Company</p></footer>
-
-    <div class="cart-btn" onclick="toggleCart()">🛒 <span id="cartCount">0</span></div>
-    <div class="cart-dialog" id="cartDialog">
-        <div class="cart-header"><h3>Shopping Cart</h3><button onclick="toggleCart()">✕</button></div>
-        <div class="cart-items" id="cartItems"><p class="empty-cart">Your cart is empty</p></div>
-        <div class="cart-footer">
-            <div class="cart-total">Total: $<span id="cartTotal">0</span></div>
-            <a href="/payment.html" class="cart-pay-btn" id="cartPayBtn">Pay Now</a>
-            <button class="cart-continue-btn" onclick="toggleCart()">Continue Shopping</button>
-        </div>
-    </div>
-    <script>
-    function toggleCart() { document.getElementById('cartDialog').classList.toggle('open'); }
     function addToCart(name, price) { let cart = JSON.parse(localStorage.getItem('cart') || '[]'); cart.push({name, price}); localStorage.setItem('cart', JSON.stringify(cart)); updateCartDisplay(); }
     function removeFromCart(index) { let cart = JSON.parse(localStorage.getItem('cart') || '[]'); cart.splice(index, 1); localStorage.setItem('cart', JSON.stringify(cart)); updateCartDisplay(); }
     function updateCartDisplay() { let cart = JSON.parse(localStorage.getItem('cart') || '[]'); document.getElementById('cartCount').textContent = cart.length; let total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0); document.getElementById('cartTotal').textContent = total.toFixed(2); let itemsHtml = cart.length === 0 ? '<p class="empty-cart">Your cart is empty</p>' : cart.map((item, i) => '<div class="cart-item"><span>' + item.name + '</span><span>$' + item.price + ' <button onclick="removeFromCart(' + i + ')">✕</button></span></div>').join(''); document.getElementById('cartItems').innerHTML = itemsHtml; if (cart.length > 0) { let itemNames = cart.map(i => i.name).join(', '); let itemPrices = cart.map(i => i.price).join(','); document.getElementById('cartPayBtn').href = '/payment.html?items=' + encodeURIComponent(itemNames) + '&total=' + total.toFixed(2); } }
