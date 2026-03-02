@@ -524,34 +524,6 @@
             if (t[key]) el.textContent = t[key];
         });
         
-        // Smart translate: check ALL text elements against translation dictionary
-        document.querySelectorAll("h1, h2, h3, h4, h5, h6, p, li, span, .tagline, .service-price, .cta-buttons a").forEach(el => {
-            const text = el.textContent.trim();
-            if (!text || text.length < 2) return;
-            
-            // Direct match with translation key
-            if (t[text]) {
-                el.textContent = t[text];
-            }
-        });
-        
-        // Update page title
-        document.title = (t["welcome"] || "AGI Company") + " | " + (t["subtitle"] || "Autonomous AI");
-    }
-    
-    // Load saved language on page load
-    window.addEventListener("DOMContentLoaded", function() {
-        const saved = localStorage.getItem("lang") || "en";
-        const langFlags = { en: "🇺🇸", es: "🇪🇸", fr: "🇫🇷", de: "🇩🇪", it: "🇮🇹", pt: "🇵🇹", ja: "🇯🇵", zh: "🇨🇳" };
-        const langNames = { en: "English", es: "Español", fr: "Français", de: "Deutsch", it: "Italiano", pt: "Português", ja: "日本語", zh: "中文" };
-        
-        if (translations[saved]) {
-            document.querySelector(".lang-flag").textContent = langFlags[saved];
-            document.querySelector(".lang-name").textContent = langNames[saved];
-            applyTranslations(saved);
-        }
-    });
-    </script>
 
 
     <div class="lang-dialog" id="langDialog">$
@@ -863,5 +835,6 @@ ssList.toggle('open'); }$
             <p>© 2026 AGI Company — <strong>415-571-9724</strong> — <a href="mailto:Miles@myl0nr0s.cloud">Miles@myl0nr0s.cloud</a></p>
         </div>
     </footer>
+</body>
 </body>
 </html>
