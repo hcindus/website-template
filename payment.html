@@ -178,12 +178,6 @@
         .pay-btn { padding: 12px 24px; background: #36454F; border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: 600; }
 
 
-        .lang-selector { position: fixed; top: 20px; right: 20px; z-index: 9999; }
-        .lang-current { background: #36454F; color: white; border: 2px solid #555; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; }
-        .lang-menu { display: none; position: absolute; top: 100%; right: 0; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; overflow: hidden; margin-top: 4px; min-width: 150px; }
-        .lang-menu.open { display: block; }
-        .lang-menu button { display: block; width: 100%; padding: 10px 16px; background: none; border: none; color: white; text-align: left; cursor: pointer; }
-        .lang-menu button:hover { background: #333; }
 
         @media (max-width: 768px) {
             nav { display: none; }
@@ -200,8 +194,6 @@
             #qrcode canvas { max-width: 100%; height: auto; }
             .copy-btn, .confirm-btn { padding: 12px 20px; font-size: 1rem; }
             .confirm-section { padding: 0 16px; }
-            .lang-selector { top: 10px; right: 10px; }
-            .lang-current { padding: 6px 12px; font-size: 0.85rem; }
             footer { padding: 30px 16px; }
         }
 
@@ -232,20 +224,6 @@
 </head>
 <body>
 
-    <div class="lang-selector">
-        <button class="lang-current" onclick="toggleLangMenu()">
-            <span class="lang-flag">🇺🇸</span> <span class="lang-name">English</span> ▾
-        </button>
-        <div class="lang-menu" id="langMenu">
-            <button onclick="changeLang('en', '🇺🇸', 'English')">🇺🇸 English</button>
-            <button onclick="changeLang('es', '🇪🇸', 'Español')">🇪🇸 Español</button>
-            <button onclick="changeLang('fr', '🇫🇷', 'Français')">🇫🇷 Français</button>
-            <button onclick="changeLang('de', '🇩🇪', 'Deutsch')">🇩🇪 Deutsch</button>
-            <button onclick="changeLang('it', '🇮🇹', 'Italiano')">🇮🇹 Italiano</button>
-            <button onclick="changeLang('pt', '🇵🇹', 'Português')">🇵🇹 Português</button>
-            <button onclick="changeLang('ja', '🇯🇵', '日本語')">🇯🇵 日本語</button>
-            <button onclick="changeLang('zh', '🇨🇳', '中文')">🇨🇳 中文</button>
-        </div>
     </div>
 
 
