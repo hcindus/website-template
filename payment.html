@@ -798,13 +798,44 @@
     function clearCart() {
         cart = [];
         localStorage.setItem("paymentCart", JSON.stringify(cart));
-        updateCartDisplay();
         
-        // Clear crypto amount display
+        // Reset all displays
+        var cartItems = document.getElementById("cartItems");
+        var cartTotalDisplay = document.getElementById("cartTotalDisplay");
+        var orderItem = document.getElementById("orderItem");
+        var orderAmount = document.getElementById("orderAmount");
         var cryptoDisplay = document.getElementById("cryptoAmountDisplay");
+        
+        if (cartItems) cartItems.innerHTML = '<p class="no-items">No items in cart</p>';
+        if (cartTotalDisplay) cartTotalDisplay.textContent = "0";
+        if (orderItem) orderItem.innerHTML = '<p class="no-items">No items</p>';
+        if (orderAmount) orderAmount.textContent = "$0";
         if (cryptoDisplay) cryptoDisplay.textContent = "";
         
-        // Clear URL params so page doesn't reload items
+        // Reset crypto to BTC
+        selectedCrypto = "BTC";
+        document.getElementById("cryptoTitle").textContent = "Bitcoin";
+        document.getElementById("walletAddress").textContent = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
+        
+        // Reset card styling
+        var cards = document.getElementsByClassName("payment-card");
+        for (var i = 0; i < cards.length; i++) {
+            cards[i].classList.remove("selected");
+            if (cards[i].getAttribute("onclick") && cards[i].getAttribute("onclick").indexOf("BTC") > -1) {
+                cards[i].classList.add("selected");
+            }
+        }
+        
+        // Update QR code
+        var qrDiv = document.getElementById("qrcode");
+        if (qrDiv && typeof QRCode !== "undefined") {
+            qrDiv.innerHTML = "";
+            QRCode.toCanvas(document.createElement("canvas"), "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh", { width: 200 }, function(err, canvas) {
+                if (!err && canvas) qrDiv.appendChild(canvas);
+            });
+        }
+        
+        // Clear URL params
         window.history.replaceState({}, document.title, window.location.pathname);
     }
     
