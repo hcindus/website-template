@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tappy Lewis - Oakland's Premier Nightclub | AI by AI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        header { padding: 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,10,10,0.8); backdrop-filter: blur(10px); }
+        header .inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #ff6b6b; text-decoration: none; }
+        nav { display: flex; gap: 36px; }
+        nav a { margin: 0 6px; color: rgba(255,255,255,0.7); font-size: 0.95rem; text-decoration: none; }
+        nav a:hover { color: #4ecdc4; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; color: #fff; background: #0a0a0a; }
+        .hero { padding-top: 120px; background: linear-gradient(135deg, #1a0a2e 0%, #2d0a3e 50%, #0a1a2e 100%); color: white; padding: 100px 20px; text-align: center; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+        .hero h1 { font-size: 4rem; margin-bottom: 20px; text-shadow: 0 0 30px rgba(255,107,107,0.5); }
+        .tagline { color: #ff6b6b; font-weight: 600; text-transform: uppercase; letter-spacing: 4px; font-size: 1.2rem; margin-bottom: 15px; }
+        .ai-badge { display: inline-block; background: linear-gradient(135deg, #4ecdc4, #44a08d); color: #0a0a0a; padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        .hero p { font-size: 1.4rem; opacity: 0.9; max-width: 600px; margin: 0 auto 30px; }
+        .hero .address { color: #4ecdc4; font-size: 1.1rem; margin-top: 20px; }
+        .btn { display: inline-block; padding: 18px 50px; border: none; border-radius: 50px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none; margin: 10px; }
+        .btn-primary { background: linear-gradient(135deg, #ff6b6b, #ee5a24); color: white; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,107,107,0.4); }
+        .btn-secondary { background: transparent; border: 2px solid #4ecdc4; color: #4ecdc4; }
+        .btn-secondary:hover { background: #4ecdc4; color: #0a0a0a; }
+        .features { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
+        .features h2 { text-align: center; font-size: 2.5rem; margin-bottom: 50px; color: #ff6b6b; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; }
+        .feature-card { text-align: center; padding: 30px; border-radius: 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; }
+        .feature-card:hover { transform: translateY(-10px); background: rgba(255,255,255,0.06); border-color: rgba(255,107,107,0.3); }
+        .feature-card .icon { font-size: 3.5rem; margin-bottom: 15px; }
+        .feature-card h3 { color: #4ecdc4; margin-bottom: 10px; font-size: 1.4rem; }
+        .feature-card p { color: rgba(255,255,255,0.7); }
+        .ai-section { background: linear-gradient(135deg, #0a1a2e 0%, #1a0a2e 100%); padding: 80px 20px; text-align: center; }
+        .ai-section h2 { font-size: 2.5rem; margin-bottom: 20px; color: #4ecdc4; }
+        .ai-section p { max-width: 700px; margin: 0 auto 30px; font-size: 1.1rem; color: rgba(255,255,255,0.8); }
+        .ai-logos { display: flex; justify-content: center; gap: 36px; flex-wrap: wrap; margin-top: 40px; }
+        .ai-logo { background: rgba(255,255,255,0.05); padding: 20px 30px; border-radius: 15px; border: 1px solid rgba(78,205,196,0.3); }
+        .events h2 { text-align: center; font-size: 2.5rem; margin-bottom: 40px; color: #4ecdc4; }
+        .event-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 36px; max-width: 1200px; margin: 0 auto; }
+        .event-card { background: rgba(255,255,255,0.05); border-radius: 15px; padding: 25px; border: 1px solid rgba(78,205,196,0.2); }
+        .event-card .date { color: #ff6b6b; font-weight: 700; font-size: 1.1rem; margin-bottom: 10px; }
+        .event-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
+        .event-card p { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
+        .info { padding: 80px 20px; max-width: 900px; margin: 0 auto; text-align: center; }
+        .info h2 { font-size: 2rem; margin-bottom: 30px; color: #ff6b6b; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 36px; margin-bottom: 40px; }
+        .info-item { padding: 20px; }
+        .info-item .icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .info-item h3 { color: #4ecdc4; margin-bottom: 5px; }
+        .info-item p { color: rgba(255,255,255,0.7); }
+        footer { background: #050505; padding: 40px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
+        footer p { opacity: 0.5; font-size: 0.9rem; }
+        footer .ai-by-ai { margin-top: 20px; color: #4ecdc4; font-weight: 600; }
+
+        .ai-chat-btn { position: fixed; top: 20px; right: 20px; width: 50px; height: 50px; background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; z-index: 1000; box-shadow: 0 4px 20px rgba(249,115,22,0.3); transition: transform 0.2s; }
+        .ai-chat-btn:hover { transform: scale(1.1); }
+        .chat-dialog { position: fixed; bottom: 80px; right: 20px; width: 350px; height: 450px; background: #1a1a1a; border: 1px solid #333; border-radius: 16px; display: none; flex-direction: column; z-index: 1000; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .chat-dialog.open { display: flex; }
+        .chat-header { padding: 16px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .chat-header h3 { font-size: 1rem; color: #f97316; }
+        .chat-close { background: none; border: none; color: #888; font-size: 1.2rem; cursor: pointer; }
+        .chat-messages { flex: 1; padding: 16px; overflow-y: auto; }
+        .chat-msg { margin-bottom: 12px; padding: 10px 14px; border-radius: 12px; max-width: 85%; font-size: 0.9rem; }
+        .chat-msg.bot { background: #333; color: #fff; align-self: flex-start; }
+        .chat-msg.user { background: #f97316; color: #fff; margin-left: auto; }
+        .chat-input { padding: 12px; border-top: 1px solid #333; display: flex; gap: 8px; }
+        .chat-input input { flex: 1; padding: 10px; background: #222; border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 0.9rem; }
+        .chat-input button { padding: 10px 16px; background: #f97316; border: none; border-radius: 8px; color: #fff; font-weight: 600; cursor: pointer; }
+        @media (max-width: 768px) {
+            nav { display: none; }
+            .mobile-menu-btn { display: block; }
+            .mobile-nav { display: none; position: fixed; top: 60px; left: 0; right: 0; background: rgba(10,10,10,0.98); padding: 20px; z-index: 99; flex-direction: column; gap: 16px; }
+            .mobile-nav.open { display: flex; }
+            .mobile-nav a { color: #fff; font-size: 1.1rem; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); text-decoration: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .event-grid { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr; }
+            .btn { padding: 14px 30px; font-size: 1rem; }
+        }
+
+        .mobile-menu-btn { display: none; background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
+
+    </style>
+</head>
+<body>
+    <header>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        <div class="inner">
+            <a href="/" class="logo">Tappy Lewis</a>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/events.html">Events</a>
+                <a href="/services.html">Services</a>
+                <a href="/store.html">Skill Store</a>
+                <a href="/payment.html">Payment</a>
+                <a href="/contact.html">Contact</a>
+                <a href="https://myl0nr0s.cloud">AGI Company</a>
+            </nav>
+        </div>
+    </header>
+    <div class="mobile-nav" id="mobileNav">
+        <a href="/">Home</a>
+        <a href="/events.html">Events</a>
+        <a href="/services.html">Services</a>
+        <a href="/store.html">Skill Store</a>
+        <a href="/payment.html">Payment</a>
+        <a href="/contact.html">Contact</a>
+        <a href="https://myl0nr0s.cloud">AGI Company</a>
+    </div>
+    <section class="hero">
+        <div class="ai-badge">🤖 AI by AI</div>
+        <p class="tagline">Oakland's Premier Nightclub</p>
+        <h1>TAPPY LEWIS</h1>
+        <p>The only nightclub powered by artificial intelligence. Experience the future of nightlife - curated by AI, designed for humans.</p>
+        <div>
+            <a href="#ai-section" class="btn btn-primary">Learn More</a>
+            <a href="#events" class="btn btn-secondary">Events</a>
+        </div>
+        <p class="address">📍 Your virtual business everywhere you are </p>
+    </section>
+    <section class="ai-section" id="ai-section">
+        <h2>🤖 Powered by AI by AI</h2>
+        <p>Tappy Lewis Online is the world's first AI-managed nightclub. Our artificial intelligence systems handle everything from music curation to guest experience, making every night uniquely unforgettable.</p>
+        <div class="ai-logos">
+            <div class="ai-logo"><span>🧠</span><br>Neural Curation</div>
+            <div class="ai-logo"><span>🎵</span><br>AI Playlists</div>
+            <div class="ai-logo"><span>📊</span><br>Predictive Analytics</div>
+            <div class="ai-logo"><span>✨</span><br>Smart Experience</div>
+        </div>
+    </section>
+    <section class="features">
+        <h2>What We Offer</h2>
+        <div class="features-grid">
+            <div class="feature-card"><div class="icon">🎵</div><h3>AI-Curated Music</h3><p>Our AI analyzes crowd energy in real-time to deliver the perfect mix.</p></div>
+            <div class="feature-card"><div class="icon">💃</div><h3>Nightly Dancing</h3><p>Dance the night away with DJs spinning the best hits. VIP tables available.</p></div>
+            <div class="feature-card"><div class="icon">🍸</div><h3>Smart Bar</h3><p>AI recommends cocktails based on your preferences.</p></div>
+            <div class="feature-card"><div class="icon">🎉</div><h3>AI Events</h3><p>Special events curated by AI - surprise guest appearances predicted by algorithms.</p></div>
+            <div class="feature-card"><div class="icon">🍔</div><h3>Late Night Bites</h3><p>Full menu available until last call.</p></div>
+            <div class="feature-card"><div class="icon">🎰</div><h3>VIP Experience</h3><p>Exclusive VIP section with bottle service and AI-optimized seating.</p></div>
+        </div>
+    </section>
+    <section class="events" id="events">
+        <h2>Upcoming Events</h2>
+        <div class="event-grid">
+            <div class="event-card"><p class="date">FRIDAYS</p><h3>AI Fridays</h3><p>Our AI curates the ultimate hip-hop, R&B, and throwback mix.</p></div>
+            <div class="event-card"><p class="date">SATURDAYS</p><h3>Neural Beats</h3><p>AI-generated electronic music. Experience sounds no human DJ could mix.</p></div>
+            <div class="event-card"><p class="date">SUNDAYS</p><h3>Sunday Sessions</h3><p>Afternoon vibes with acoustic performances. Brunch available.</p></div>
+            <div class="event-card"><p class="date">WEEKDAYS</p><h3>Industry Night</h3><p>Mondays & Tuesdays - $5 drinks for service industry.</p></div>
+        </div>
+    </section>
+    <section class="info">
+        <h2>Visit Us</h2>
+        <div class="info-grid">
+            <div class="info-item"><div class="icon">📍</div><h3>Location</h3><p>Your virtual business everywhere you are<br>Oakland </p></div>
+            <div class="info-item"><div class="icon">🕐</div><h3>Hours</h3><p>Thu-Sat: 9pm - 2am<br>Sun: 6pm - 12am</p></div>
+            <div class="info-item"><div class="icon">📞</div><h3>Contact</h3><p><strong><strong>415-571-9724</strong></strong><br>info@tappylewis.cloud</p></div>
+            <div class="info-item"><div class="icon">🎟️</div><h3>Reservations</h3><p>Book tables online<br>or call for groups 10+</p></div>
+        </div>
+    </section>
+    <footer>
+        <p>📞 <strong><strong><strong>415-571-9724</strong></strong></strong> — &copy; 2026 Tappy Lewis. All rights reserved.</p>
+        <p>21+ to enter. Valid ID required.</p>
+        <p class="ai-by-ai">🤖 Powered by AI by AI</p>
+    </footer>
+    <script>function toggleMobileMenu() { document.getElementById("mobileNav").classList.toggle("open"); }</script>
+</body>
+</html>
