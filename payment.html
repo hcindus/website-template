@@ -185,6 +185,10 @@
         .lang-menu button { display: block; width: 100%; padding: 10px 16px; background: none; border: none; color: white; text-align: left; cursor: pointer; }
         .lang-menu button:hover { background: #333; }
 
+        @media (max-width: 768px) {
+            nav { display: none; }
+            .mobile-menu-btn { display: block; }
+            .container { padding: 0 16px; }
             .page-title { padding: 40px 0 30px; }
             .page-title h1 { font-size: 1.8rem; }
             .payment-cards { grid-template-columns: 1fr; gap: 12px; }
@@ -201,6 +205,59 @@
             footer { padding: 30px 16px; }
         }
 
+        .mobile-menu-btn { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+        .mobile-nav { display: none; position: fixed; top: 60px; left: 0; right: 0; background: #0d0d0d; border-bottom: 1px solid #1f1f1f; padding: 20px; z-index: 99; flex-direction: column; gap: 12px; }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav a { color: #fff; font-size: 1.1rem; padding: 12px; border-bottom: 1px solid #1f1f1f; text-decoration: none; }
+        .mobile-nav a:hover { color: #228B22; }
+
+    </style>
+</head>
+<body>
+
+    </div>
+
+
+    <!-- Cart Popup -->
+    <div class="cart-popup" id="cartPopup">
+        <div class="cart-popup-content">
+            <h2>Thank You!</h2>
+            <p>Your order is ready.</p>
+            <div class="cart-summary" id="cartSummary"></div>
+            <div class="cart-total">Total: $<span id="popupTotal">0</span></div>
+            <div class="cart-buttons">
+                <a href="/" class="continue-btn">Continue Shopping</a>
+                <button class="pay-btn" onclick="processPayment()">Pay Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Check if this is a cart checkout
+    const urlParams = new URLSearchParams(window.location.search);
+    const itemsParam = urlParams.get('items');
+    const totalParam = urlParams.get('total');
+    const item = urlParams.get('item');
+    const amount = urlParams.get('amount');
+    
+    window.addEventListener('DOMContentLoaded', function() {
+        const orderItem = document.getElementById('orderItem');
+        const orderAmount = document.getElementById('orderAmount');
+        
+        // Always show popup when there's an item (cart functionality)
+        if (itemsParam && totalParam) {
+            // Show cart popup
+            const items = itemsParam.split(',');
+            let summaryHtml = '<ul>';
+            let total = 0;
+            items.forEach(item => {
+                // Parse item and price (format: "ItemName $Price")
+                let parts = item.trim().split(' $');
+                let name = parts[0];
+                let price = parts[1] || 0;
+                total += parseFloat(price);
+                summaryHtml += '<li>' + name + ' - $' + price + '</li>';
+            });
             summaryHtml += '</ul>';
             
             document.getElementById('cartSummary').innerHTML = summaryHtml;
@@ -232,7 +289,7 @@
         <header>
         <div class="container">
             <a href="/" class="logo" style="text-decoration:none"><span>AGI</span> Company</a>
-                                                            
+                                                            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
             <nav>
                 <a href="/">Home</a>
                 <a href="/agents.html">Agents</a>
@@ -242,6 +299,15 @@
                 <a href="/payment.html" class="active">Payment</a>
                 <a href="https://tappylewis.cloud">Tappy Lewis</a>
     
+    <div class="mobile-nav" id="mobileNav">
+        <a href="/">Home</a>
+        <a href="/agents.html">Agents</a>
+        <a href="/software.html">Software</a>
+        <a href="/services.html">Services</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/payment.html">Payment</a>
+        <a href="https://tappylewis.cloud">Tappy Lewis</a>
+    </div>
             </nav>
         </div>
     </header>
@@ -570,14 +636,9 @@
     
     function changeLang(code, flag, name) {
         localStorage.setItem("lang", code);
-        document.querySelector(".lang-flag").textContent = flag;
-        document.querySelector(".lang-name").textContent = name;
         document.getElementById("langMenu").classList.remove("open");
-        applyTranslations(code);
     }
     
-    function applyTranslations(code) {
-        const t = translations[code];
         if (!t) return;
         
         // Translate elements with data-i18n attribute
@@ -608,16 +669,8 @@
         document.title = (t["welcome"] || "AGI Company") + " | " + (t["subtitle"] || "Autonomous AI");
     }
     
-    // Load saved language on page load
     window.addEventListener("DOMContentLoaded", function() {
-        const saved = localStorage.getItem("lang") || "en";
-        const langFlags = { en: "🇺🇸", es: "🇪🇸", fr: "🇫🇷", de: "🇩🇪", it: "🇮🇹", pt: "🇵🇹", ja: "🇯🇵", zh: "🇨🇳" };
-        const langNames = { en: "English", es: "Español", fr: "Français", de: "Deutsch", it: "Italiano", pt: "Português", ja: "日本語", zh: "中文" };
         
-        if (translations[saved]) {
-            document.querySelector(".lang-flag").textContent = langFlags[saved];
-            document.querySelector(".lang-name").textContent = langNames[saved];
-            applyTranslations(saved);
         }
     });
     </script>

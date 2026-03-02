@@ -508,14 +508,9 @@
     
     function changeLang(code, flag, name) {
         localStorage.setItem("lang", code);
-        document.querySelector(".lang-flag").textContent = flag;
-        document.querySelector(".lang-name").textContent = name;
         document.getElementById("langMenu").classList.remove("open");
-        applyTranslations(code);
     }
     
-    function applyTranslations(code) {
-        const t = translations[code];
         if (!t) return;
         
         // Translate elements with data-i18n attribute
@@ -563,11 +558,6 @@ ssList.toggle('open'); }$
     function setLang(lang) { 
         localStorage.setItem('lang', lang); 
         toggleLang(); 
-        applyTranslations(lang);
-        const langFlags = { en: "🇺🇸", es: "🇪🇸", fr: "🇫🇷", de: "🇩🇪", it: "🇮🇹", pt: "🇵🇹", ja: "🇯🇵", zh: "🇨🇳" };
-        const langNames = { en: "English", es: "Español", fr: "Français", de: "Deutsch", it: "Italiano", pt: "Português", ja: "日本語", zh: "中文" };
-        if (document.querySelector(".lang-flag")) document.querySelector(".lang-flag").textContent = langFlags[lang];
-        if (document.querySelector(".lang-name")) document.querySelector(".lang-name").textContent = langNames[lang];
     }
     </script>
 

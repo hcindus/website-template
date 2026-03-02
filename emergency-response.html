@@ -58,6 +58,12 @@
         .cart-continue-btn { display: block; width: 100%; padding: 12px; background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; cursor: pointer; }
 
 
+        @media (max-width: 768px) {
+            .mobile-menu-btn { display: block; }
+            .mobile-nav { display: none; }
+            .mobile-nav.open { display: flex; }
+            .container { padding: 0 16px; }
+            .page-title { padding: 40px 0 30px; }
             .page-title h1 { font-size: 1.8rem; }
             .hero { padding: 40px 20px; }
             .hero h1 { font-size: 1.6rem; }
@@ -76,6 +82,98 @@
         .lang-menu button { display: block; width: 100%; padding: 10px 16px; background: none; border: none; color: white; text-align: left; cursor: pointer; }
         .lang-menu button:hover { background: #333; }
 
+        .mobile-menu-btn { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; padding: 8px; }
+        .mobile-nav { display: none; position: fixed; top: 70px; left: 0; right: 0; background: #0d0d0d; border-bottom: 1px solid #1f1f1f; padding: 20px; z-index: 99; flex-direction: column; gap: 12px; }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav a { color: #fff; font-size: 1.1rem; padding: 12px; border-bottom: 1px solid #1f1f1f; text-decoration: none; }
+        .mobile-nav a:hover { color: #228B22; }
+
+</style>
+</head>
+<body>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+    <div class="mobile-nav" id="mobileNav">
+        <a href="/">Home</a>
+        <a href="/agents.html">Agents</a>
+        <a href="/software.html">Software</a>
+        <a href="/services.html">Services</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/payment.html">Payment</a>
+        <a href="https://tappylewis.cloud">Tappy Lewis</a>
+    </div>
+
+
+    </div>
+
+    <a href="/contact.html?item=Emergency Response&amount=499" class="consult-btn">Book a Consultation</a>
+    <a href="/services.html" class="back-btn">← Back to Services</a>
+    
+    <header>
+        <div class="container">
+            <div class="icon">🚨</div>
+            <h1>Emergency Response</h1>
+            <div class="tagline">When It Counts</div>
+        </div>
+    </header>
+    
+    <section>
+        <div class="container">
+            <h2>The Problem</h2>
+            <p>Before you can solve something, you need to understand the problem. Heres what most businesses face:</p>
+            <ul>When AI goes down, operations stop. Every minute of downtime costs money. Most support teams take hours—or days—to respond. You need experts NOW.
+<li>Downtime destroying productivity</li>
+<li>Slow response from support teams</li>
+<li>No clear escalation path</li>
+<li>No recovery plan in place</li>
+            </ul>
+        </div>
+    </section>
+    
+    <section>
+        <div class="container">
+            <h2>Our Solution</h2>
+            <p>Our rapid deployment team responds within 4 hours—guaranteed. When something breaks, were on it immediately. We minimize downtime, get you back running fast, and provide a root cause analysis to prevent recurrence.</p>
+            <div class="highlight">
+                <strong>Average incident resolution time: 2 hours. Industry average: 24+ hours.</strong>
+            </div>
+        </div>
+    </section>
+    
+    <section>
+        <div class="container">
+            <h2>What is Included</h2>
+            <ul>
+                <li>24/7 emergency hotline</li>
+                <li>4-hour response guarantee</li>
+                <li>Unlimited incident resolution</li>
+                <li>Root cause analysis</li>
+                <li>Prevention recommendations</li>
+                <li>Post-incident reports</li>
+                <li>Optional on-site visits</li>
+            </ul>
+        </div>
+    </section>
+    
+    <div class="cta">
+        <div class="container">
+            <h2>Ready to Get Started?</h2>
+            <div class="price">$499<span>/month</span></div>
+            
+        </div>
+    </div>
+
+    <div class="cart-btn" onclick="toggleCart()">🛒 <span id="cartCount">0</span></div>
+    <div class="cart-dialog" id="cartDialog">
+        <div class="cart-header"><h3>Shopping Cart</h3><button onclick="toggleCart()">✕</button></div>
+        <div class="cart-items" id="cartItems"><p class="empty-cart">Your cart is empty</p></div>
+        <div class="cart-footer">
+            <div class="cart-total">Total: $<span id="cartTotal">0</span></div>
+            <a href="/payment.html" class="cart-pay-btn" id="cartPayBtn">Pay Now</a>
+            <button class="cart-continue-btn" onclick="toggleCart()">Continue Shopping</button>
+        </div>
+    </div>
+    <script>
+    function toggleCart() { document.getElementById('cartDialog').classList.toggle('open'); }
     function addToCart(name, price) { let cart = JSON.parse(localStorage.getItem('cart') || '[]'); cart.push({name, price}); localStorage.setItem('cart', JSON.stringify(cart)); updateCartDisplay(); }
     function removeFromCart(index) { let cart = JSON.parse(localStorage.getItem('cart') || '[]'); cart.splice(index, 1); localStorage.setItem('cart', JSON.stringify(cart)); updateCartDisplay(); }
     function updateCartDisplay() { let cart = JSON.parse(localStorage.getItem('cart') || '[]'); document.getElementById('cartCount').textContent = cart.length; let total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0); document.getElementById('cartTotal').textContent = total.toFixed(2); let itemsHtml = cart.length === 0 ? '<p class="empty-cart">Your cart is empty</p>' : cart.map((item, i) => '<div class="cart-item"><span>' + item.name + '</span><span>$' + item.price + ' <button onclick="removeFromCart(' + i + ')">✕</button></span></div>').join(''); document.getElementById('cartItems').innerHTML = itemsHtml; if (cart.length > 0) { let itemNames = cart.map(i => i.name).join(', '); let itemPrices = cart.map(i => i.price).join(','); document.getElementById('cartPayBtn').href = '/payment.html?items=' + encodeURIComponent(itemNames) + '&total=' + total.toFixed(2); } }
@@ -94,29 +192,17 @@
         ja: { "Software": "ソフトウェア", "Services": "サービス", "Agents": "エージェント", "Contact": "お問い合わせ", "Payment": "お支払い", "Learn More": "詳細を見る", "Book a Consultation": "相談を予約" },
         zh: { "Software": "软件", "Services": "服务", "Agents": "代理", "Contact": "联系方式", "Payment": "付款", "Learn More": "了解更多", "Book a Consultation": "预约咨询" }
     };
-    const langFlags = { en: "🇺🇸", es: "🇪🇸", fr: "🇫🇷", de: "🇩🇪", it: "🇮🇹", pt: "🇵🇹", ja: "🇯🇵", zh: "🇨🇳" };
-    const langNames = { en: "English", es: "Español", fr: "Français", de: "Deutsch", it: "Italiano", pt: "Português", ja: "日本語", zh: "中文" };
     function toggleLangMenu() { document.getElementById("langMenu").classList.toggle("open"); }
     function changeLang(code, flag, name) {
         localStorage.setItem("lang", code);
-        document.querySelector(".lang-flag").textContent = flag;
-        document.querySelector(".lang-name").textContent = name;
         document.getElementById("langMenu").classList.remove("open");
-        applyTranslations(code);
     }
-    function applyTranslations(code) {
-        const t = translations[code]; if (!t) return;
         document.querySelectorAll("h1, h2, h3, h4, h5, h6, p, li, span, a").forEach(el => {
             const text = el.textContent.trim();
             if (t[text]) el.textContent = t[text];
         });
     }
     window.addEventListener("DOMContentLoaded", function() {
-        const saved = localStorage.getItem("lang") || "en";
-        if (translations[saved]) {
-            document.querySelector(".lang-flag").textContent = langFlags[saved];
-            document.querySelector(".lang-name").textContent = langNames[saved];
-            applyTranslations(saved);
         }
     });
     </script>
