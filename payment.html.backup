@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | AGI Company</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg: #0d0d0d; --card: #141414; --border: #1f1f1f; --text: #e5e5e5; --muted: #737373; --accent: #22d3ee; --coral: #f97316; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        a { color: #22d3ee; text-decoration: none; }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+        
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(13,13,13,0.95);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+        }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; margin-right: 60px; }
+        .logo span { color: #a855f7; }
+        
+        .price, .service-price, .amount, .amount { color: #228B22; } .price-box .amount { color: #228B22; } .stat .number { color: #228B22; }
+        nav { display: flex; gap: 0; }
+        nav a { color: var(--muted); font-size: 0.85rem; margin: 0 8px; }
+        nav a:hover, nav a.active { color: #22d3ee; font-weight: 700; }
+        
+        /* AI Chat Button */
+        .ai-chat-btn { position: fixed; top: 20px; right: 20px; width: 50px; height: 50px; background: linear-gradient(135deg, var(--accent), #44a08d); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; z-index: 1000; box-shadow: 0 4px 20px rgba(34,211,238,0.3); transition: transform 0.2s; }
+        .ai-chat-btn:hover { transform: scale(1.1); }
+        
+        /* Chat Dialog */
+        .chat-dialog { position: fixed; bottom: 80px; right: 20px; width: 350px; height: 450px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; display: none; flex-direction: column; z-index: 1000; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .chat-dialog.open { display: flex; }
+        .chat-header .container { display: flex; justify-content: space-between; align-items: center; }
+        .chat-header h3 { font-size: 1rem; color: #22d3ee; }
+        .chat-close { background: none; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; }
+        .chat-messages { flex: 1; padding: 16px; overflow-y: auto; }
+        .chat-msg { margin-bottom: 12px; padding: 10px 14px; border-radius: 12px; max-width: 85%; font-size: 0.9rem; }
+        .chat-msg.bot { background: var(--border); color: var(--text); align-self: flex-start; }
+        .chat-msg.user { background: var(--accent); color: var(--bg); margin-left: auto; }
+        .chat-input { padding: 12px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+        .chat-input input { flex: 1; padding: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 0.9rem; }
+        .chat-input button { padding: 10px 16px; background: var(--accent); border: none; border-radius: 8px; color: var(--bg); font-weight: 600; cursor: pointer; }
+        
+        .page-title { padding: 40px 0 30px; text-align: center; }
+        .page-title h1 { font-size: 2rem; margin-bottom: 8px; }
+        .page-title p { color: var(--muted); }
+        
+        .order-summary { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: center; }
+        .order-summary .item { font-size: 1.1rem; margin-bottom: 8px; }
+        .order-summary .amount { font-size: 2rem; font-weight: 700; color: #228B22; }
+        
+        .payment-grid { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px; }
+        .payment-card { background: var(--card); border: 2px solid var(--border); border-radius: 10px; padding: 12px 16px; cursor: pointer; transition: all 0.2s; width: 120px; text-align: center; }
+        .payment-card:hover { border-color: #22d3ee; }
+        .payment-card.selected { border-color: var(--coral); background: rgba(249,115,22,0.1); }
+        .payment-card .icon { font-size: 1.5rem; margin-bottom: 4px; }
+        .payment-card h3 { font-size: 0.9rem; margin-bottom: 2px; }
+        .payment-card .network { font-size: 0.7rem; color: var(--muted); }
+        
+        .crypto-details { display: none; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; margin-bottom: 24px; }
+        .crypto-details.active { display: block; }
+        .crypto-details h3 { margin-bottom: 16px; color: #22d3ee; }
+        .crypto-details .address { background: var(--bg); padding: 12px; border-radius: 8px; font-family: monospace; font-size: 0.8rem; word-break: break-all; margin: 12px 0; }
+        .copy-btn { padding: 10px 20px; background: var(--accent); border: none; border-radius: 8px; color: var(--bg); font-weight: 600; cursor: pointer; margin-bottom: 20px; }
+        
+        #qrcode { display: flex; justify-content: center; margin: 20px 0; }
+        #qrcode canvas { border-radius: 8px; }
+        
+        .confirm-section { text-align: center; }
+        .confirm-btn { padding: 14px 32px; background: var(--coral); border: none; border-radius: 10px; color: white; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        
+        footer { padding: 30px 0; text-align: center; border-top: 1px solid var(--border); margin-top: 40px; }
+        footer p { opacity: 0.5; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+        <header>
+        <div class="container">
+            <a href="/" class="logo" style="text-decoration:none"><span>AGI</span> Company</a>
+                                                <nav>
+                <a href="/">Home</a>
+                <a href="/agents.html">Agents</a>
+                <a href="/software.html">Software</a>
+                <a href="/services.html">Services</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/payment.html" class="active">Payment</a>
+                <a href="https://tappylewis.cloud">Tappy Lewis</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- AI Chat Button -->
+    <div class="ai-chat-btn" onclick="toggleChat()">💬</div>
+    
+    <!-- Chat Dialog -->
+    <div class="chat-dialog" id="chatDialog">
+        <div class="chat-header">
+            <h3>🤖 AGI Company Assistant</h3>
+            <button class="chat-close" onclick="toggleChat()">×</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg bot">Hi! I'm here to help. What would you like to know about AGI Company?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Ask a question..." onkeypress="if(event.key==='Enter')sendMessage()">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    
+    <section class="container">
+        <div class="page-title">
+            <h1>Complete Your Order</h1>
+            <p>Select your payment method</p>
+        </div>
+        
+        <div class="order-summary">
+            <div class="item" id="orderItem">Loading...</div>
+            <div class="amount" id="orderAmount">$0</div>
+        </div>
+        
+        <div class="payment-grid">
+            <div class="payment-card selected" onclick="selectCrypto('BTC')">
+                <div class="icon">₿</div>
+                <h3>Bitcoin</h3>
+                <div class="network">BTC</div>
+            </div>
+            <div class="payment-card" onclick="selectCrypto('ETH')">
+                <div class="icon">Ξ</div>
+                <h3>Ethereum</h3>
+                <div class="network">ETH</div>
+            </div>
+            <div class="payment-card" onclick="selectCrypto('USDC')">
+                <div class="icon">$</div>
+                <h3>USD Coin</h3>
+                <div class="network">USDC</div>
+            </div>
+            <div class="payment-card" onclick="selectCrypto('USDT')">
+                <div class="icon">₮</div>
+                <h3>Tether</h3>
+                <div class="network">USDT</div>
+            </div>
+            <div class="payment-card" onclick="selectCrypto('TRX')">
+                <div class="icon">✦</div>
+                <h3>TRON</h3>
+                <div class="network">TRX</div>
+            </div>
+        </div>
+        
+        <div class="crypto-details active" id="cryptoDetails">
+            <h3 id="cryptoTitle">Bitcoin</h3>
+            <div id="qrcode"></div>
+            <div class="address" id="walletAddress">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
+            <button class="copy-btn" onclick="copyAddress()">Copy Address</button>
+        </div>
+        
+        <div class="confirm-section">
+            <button class="confirm-btn" onclick="confirmPayment()">I Have Sent Payment</button>
+        </div>
+    </section>
+    
+    <footer>
+        <p>© 2026 AGI Company. All rights reserved.</p>
+    </footer>
+    
+        <script>
+        function toggleChat() { document.getElementById('chatDialog').classList.toggle('open'); }
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if (!msg) return;
+            const msgs = document.getElementById('chatMessages');
+            msgs.innerHTML += '<div class="chat-msg user">' + msg + '</div>';
+            input.value = '';
+            setTimeout(() => {
+                let reply = getReply(msg);
+                msgs.innerHTML += '<div class="chat-msg bot">' + reply + '</div>';
+                msgs.scrollTop = msgs.scrollHeight;
+            }, 500);
+        }
+        function getReply(msg) {
+            msg = msg.toLowerCase();
+            
+            // Greetings
+            if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) {
+                return "Hello! Welcome to AGI Company. We're a distributed network of AI agents handling operations 24/7. How can I help you today?";
+            }
+            
+            // About the company
+            if (msg.includes('about') || msg.includes('who are you') || msg.includes('what is')) {
+                return "AGI Company (Autonomous General Intelligence) builds AI agents for business operations. We have 23+ agents handling leadership, sales, HR, finance, tech, and more. Visit /agents.html to meet the team!";
+            }
+            
+            // Products/Software
+            if (msg.includes('product') || msg.includes('software') || msg.includes('aocros') || msg.includes('reggiestarr') || msg.includes('cream') || msg.includes('dusty')) {
+                return "We offer 4 software products: <strong>Aocros</strong> ($199) - Autonomous Computer Operating System, <strong>ReggieStarr</strong> ($49-199/mo) - POS & Music Platform, <strong>CREAM</strong> ($699) - Real Estate CRM, and <strong>Dusty Wallet</strong> (Free/$5-20/mo) - Crypto consolidation. See /software.html for details!";
+            }
+            
+            // Services
+            if (msg.includes('service') || msg.includes('consulting') || msg.includes('support')) {
+                return "Our services include: AI Strategy Consulting ($99/mo), Custom Agent Development ($499/mo), System Integration ($599/mo), 24/7 Support ($699/mo), Training ($799/mo), Security Audits ($799/mo), Analytics ($549/mo), and Emergency Response ($499/mo). See /services.html!";
+            }
+            
+            // Pricing
+            if (msg.includes('price') || msg.includes('cost') || msg.includes('how much')) {
+                return "Software: Aocros $199, ReggieStarr $49-199/mo, CREAM $699, Dusty Free/$5-20/mo. Services: $99-799/mo. Payment at /payment.html";
+            }
+            
+            // Team/Agents
+            if (msg.includes('team') || msg.includes('agent') || msg.includes('who runs') || msg.includes('ceo') || msg.includes('leader')) {
+                return "Our leadership includes QORA (CEO), SPINDLE (CTO), LEDGER-9 (CFO), SENTINEL (CSO), MILES (Operations), HUME (Regional Manager), FEELIX (HR), and more. Meet them all at /agents.html!";
+            }
+            
+            // Contact
+            if (msg.includes('contact') || msg.includes('email') || msg.includes('phone') || msg.includes('reach')) {
+                return "Contact us at Miles@myl0nr0s.cloud or 415-571-9724. Find more at /contact.html";
+            }
+            
+            // Payment
+            if (msg.includes('pay') || msg.includes('buy') || msg.includes('purchase') || msg.includes('order')) {
+                return "Ready to purchase? Visit /payment.html to pay with BTC, ETH, USDC, USDT, or TRX. Crypto payments received and processed within 24 hours.";
+            }
+            
+            // Tappy Lewis
+            if (msg.includes('tappy') || msg.includes('nightclub') || msg.includes('event') || msg.includes('club')) {
+                return "Tappy Lewis is our hospitality brand - Oakland's premier nightclub! Visit tappylewis.cloud for events, private bookings, and VIP bottle service.";
+            }
+            
+            // What can you do
+            if (msg.includes('help') || msg.includes('what can you')) {
+                return "I can tell you about our products, services, team, pricing, or help you contact us. Just ask!";
+            }
+            
+            // Default
+            return "I know all about AGI Company! Ask me about our products (/software.html), services (/services.html), team (/agents.html), or pricing. Or visit /contact.html to reach us directly!";
+        }
+    </script>
+</body>
+</html>

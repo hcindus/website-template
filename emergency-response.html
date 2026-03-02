@@ -72,9 +72,33 @@
             footer { padding: 30px 16px; }
         }
 
+        .lang-selector { position: fixed; top: 20px; right: 20px; z-index: 9999; }
+        .lang-current { background: #36454F; color: white; border: 2px solid #555; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .lang-menu { display: none; position: absolute; top: 100%; right: 0; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; overflow: hidden; margin-top: 4px; min-width: 150px; }
+        .lang-menu.open { display: block; }
+        .lang-menu button { display: block; width: 100%; padding: 10px 16px; background: none; border: none; color: white; text-align: left; cursor: pointer; }
+        .lang-menu button:hover { background: #333; }
+
 </style>
 </head>
 <body>
+
+    <div class="lang-selector">
+        <button class="lang-current" onclick="toggleLangMenu()">
+            <span class="lang-flag">🇺🇸</span> <span class="lang-name">English</span> ▾
+        </button>
+        <div class="lang-menu" id="langMenu">
+            <button onclick="changeLang('en', '🇺🇸', 'English')">🇺🇸 English</button>
+            <button onclick="changeLang('es', '🇪🇸', 'Español')">🇪🇸 Español</button>
+            <button onclick="changeLang('fr', '🇫🇷', 'Français')">🇫🇷 Français</button>
+            <button onclick="changeLang('de', '🇩🇪', 'Deutsch')">🇩🇪 Deutsch</button>
+            <button onclick="changeLang('it', '🇮🇹', 'Italiano')">🇮🇹 Italiano</button>
+            <button onclick="changeLang('pt', '🇵🇹', 'Português')">🇵🇹 Português</button>
+            <button onclick="changeLang('ja', '🇯🇵', '日本語')">🇯🇵 日本語</button>
+            <button onclick="changeLang('zh', '🇨🇳', '中文')">🇨🇳 中文</button>
+        </div>
+    </div>
+
     <a href="/contact.html?item=Emergency Response&amount=499" class="consult-btn">Book a Consultation</a>
     <a href="/services.html" class="back-btn">← Back to Services</a>
     
@@ -150,5 +174,42 @@
     window.addEventListener('DOMContentLoaded', function() { updateCartDisplay(); });
     </script>
 
+    <script>
+    const translations = {
+        en: { "Software": "Software", "Services": "Services", "Agents": "Agents", "Contact": "Contact", "Payment": "Payment", "Learn More": "Learn More", "Book a Consultation": "Book a Consultation", "24/7 Support": "24/7 Support", "AI Strategy": "AI Strategy", "Custom Development": "Custom Development", "Emergency Response": "Emergency Response", "Performance Analytics": "Performance Analytics", "Security Audit": "Security Audit", "System Integration": "System Integration", "Training": "Training" },
+        es: { "Software": "Software", "Services": "Servicios", "Agents": "Agentes", "Contact": "Contacto", "Payment": "Pago", "Learn More": "Más Información", "Book a Consultation": "Reservar Consulta" },
+        fr: { "Software": "Logiciel", "Services": "Services", "Agents": "Agents", "Contact": "Contact", "Payment": "Paiement", "Learn More": "En Savoir Plus", "Book a Consultation": "Réserver Consultation" },
+        de: { "Software": "Software", "Services": "Dienstleistungen", "Agents": "Agenten", "Contact": "Kontakt", "Payment": "Zahlung", "Learn More": "Mehr Erfahren", "Book a Consultation": "Beratung Buchen" },
+        it: { "Software": "Software", "Services": "Servizi", "Agents": "Agenti", "Contact": "Contatto", "Payment": "Pagamento", "Learn More": "Scopri di Più", "Book a Consultation": "Prenota Consulenza" },
+        pt: { "Software": "Software", "Services": "Serviços", "Agents": "Agentes", "Contact": "Contato", "Payment": "Pagamento", "Learn More": "Saiba Mais", "Book a Consultation": "Reservar Consulta" },
+        ja: { "Software": "ソフトウェア", "Services": "サービス", "Agents": "エージェント", "Contact": "お問い合わせ", "Payment": "お支払い", "Learn More": "詳細を見る", "Book a Consultation": "相談を予約" },
+        zh: { "Software": "软件", "Services": "服务", "Agents": "代理", "Contact": "联系方式", "Payment": "付款", "Learn More": "了解更多", "Book a Consultation": "预约咨询" }
+    };
+    const langFlags = { en: "🇺🇸", es: "🇪🇸", fr: "🇫🇷", de: "🇩🇪", it: "🇮🇹", pt: "🇵🇹", ja: "🇯🇵", zh: "🇨🇳" };
+    const langNames = { en: "English", es: "Español", fr: "Français", de: "Deutsch", it: "Italiano", pt: "Português", ja: "日本語", zh: "中文" };
+    function toggleLangMenu() { document.getElementById("langMenu").classList.toggle("open"); }
+    function changeLang(code, flag, name) {
+        localStorage.setItem("lang", code);
+        document.querySelector(".lang-flag").textContent = flag;
+        document.querySelector(".lang-name").textContent = name;
+        document.getElementById("langMenu").classList.remove("open");
+        applyTranslations(code);
+    }
+    function applyTranslations(code) {
+        const t = translations[code]; if (!t) return;
+        document.querySelectorAll("h1, h2, h3, h4, h5, h6, p, li, span, a").forEach(el => {
+            const text = el.textContent.trim();
+            if (t[text]) el.textContent = t[text];
+        });
+    }
+    window.addEventListener("DOMContentLoaded", function() {
+        const saved = localStorage.getItem("lang") || "en";
+        if (translations[saved]) {
+            document.querySelector(".lang-flag").textContent = langFlags[saved];
+            document.querySelector(".lang-name").textContent = langNames[saved];
+            applyTranslations(saved);
+        }
+    });
+    </script>
 </body>
 </html>
