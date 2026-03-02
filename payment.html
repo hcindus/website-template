@@ -223,7 +223,7 @@
         .cart-items .remove-btn { background: none; border: none; color: #f97316; cursor: pointer; margin-left: 12px; }
         .no-items { color: var(--muted); text-align: center; padding: 20px; }
         .cart-total-display { font-size: 1.5rem; font-weight: 700; color: #228B22; margin: 20px 0; }
-        .cart-actions { display: flex; gap: 12px; justify-content: center; }
+        .cart-actions { display: flex; gap: 16px; justify-content: center; align-items: center; }
         .btn-continue { display: inline-block; padding: 12px 24px; background: #22d3ee; color: #000; border-radius: 8px; font-weight: 600; text-decoration: none; }
         
         #cryptoAmountDisplay { font-size: 1.5rem; color: #228B22; font-weight: 700; margin: 10px 0; }
@@ -430,6 +430,26 @@
         </div>
         
         <script>
+        // Crypto exchange rates (approximate)
+        const cryptoRates = {
+            'BTC': 87500,
+            'ETH': 3200,
+            'USDC': 1,
+            'USDT': 1,
+            'TRX': 0.28
+        };
+        
+        let selectedCrypto = 'BTC';
+        
+        function updateCryptoAmount() {
+            const total = window.cartTotal || 0;
+            const cryptoDiv = document.getElementById('cryptoAmountDisplay');
+            if (cryptoDiv && cryptoRates[selectedCrypto]) {
+                const cryptoAmt = total / cryptoRates[selectedCrypto];
+                cryptoDiv.textContent = selectedCrypto + ' ' + cryptoAmt.toFixed(selectedCrypto === 'BTC' ? 6 : 2);
+            }
+        }
+        
         const wallets = {
             'BTC': { address: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh', name: 'Bitcoin' },
             'ETH': { address: '0x4A2dC53D8d8f0FE9F4b7e0f0f7e4f0f7e4f0f7e', name: 'Ethereum' },
@@ -439,8 +459,12 @@
         };
         
         function selectCrypto(crypto) {
+            selectedCrypto = crypto;
             const w = wallets[crypto];
             if (!w) return;
+            
+            // Update crypto amount
+            updateCryptoAmount();
             
             // Update title and address
             document.getElementById('cryptoTitle').textContent = w.name;
