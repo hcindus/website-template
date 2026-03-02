@@ -612,19 +612,49 @@
     </script>
 
 
+    <div class="lang-dialog" id="langDialog">$
     <div class="lang-dialog" id="langDialog">
+        <button onclick="setLang('en')">\360\237\207\272\360\237\207\
+\270 English</button>$
         <button onclick="setLang('en')">🇺🇸 English</button>
+        <button onclick="setLang('es')">\360\237\207\252\360\237\207\
+\270 Espa\303\261ol</button>$
         <button onclick="setLang('es')">🇪🇸 Español</button>
+        <button onclick="setLang('fr')">\360\237\207\253\360\237\207\
+\267 Fran\303\247ais</button>$
         <button onclick="setLang('fr')">🇫🇷 Français</button>
+        <button onclick="setLang('de')">\360\237\207\251\360\237\207\
+\252 Deutsch</button>$
         <button onclick="setLang('de')">🇩🇪 Deutsch</button>
+        <button onclick="setLang('it')">\360\237\207\256\360\237\207\
+\271 Italiano</button>$
         <button onclick="setLang('it')">🇮🇹 Italiano</button>
+        <button onclick="setLang('pt')">\360\237\207\265\360\237\207\
+\271 Portugu\303\252s</button>$
         <button onclick="setLang('pt')">🇵🇹 Português</button>
+        <button onclick="setLang('ja')">\360\237\207\257\360\237\207\
+\265 \346\227\245\346\234\254\350\252\236</button>$
         <button onclick="setLang('ja')">🇯🇵 日本語</button>
+        <button onclick="setLang('zh')">\360\237\207\250\360\237\207\
+\263 \344\270\255\346\226\207</button>$
         <button onclick="setLang('zh')">🇨🇳 中文</button>
+    </div>$
     </div>
+    <script>$
     <script>
+    function toggleLang() { document.getElementById('langDialog').cla\
+ssList.toggle('open'); }$
     function toggleLang() { document.getElementById('langDialog').classList.toggle('open'); }
-    function setLang(lang) { localStorage.setItem('lang', lang); toggleLang();  }
+    function setLang(lang) { $
+    function setLang(lang) { 
+        localStorage.setItem('lang', lang); 
+        toggleLang(); 
+        applyTranslations(lang);
+        const langFlags = { en: "🇺🇸", es: "🇪🇸", fr: "🇫🇷", de: "🇩🇪", it: "🇮🇹", pt: "🇵🇹", ja: "🇯🇵", zh: "🇨🇳" };
+        const langNames = { en: "English", es: "Español", fr: "Français", de: "Deutsch", it: "Italiano", pt: "Português", ja: "日本語", zh: "中文" };
+        if (document.querySelector(".lang-flag")) document.querySelector(".lang-flag").textContent = langFlags[lang];
+        if (document.querySelector(".lang-name")) document.querySelector(".lang-name").textContent = langNames[lang];
+    }
     </script>
 
     <div class="ai-chat-btn" onclick="toggleChat()">💬</div>

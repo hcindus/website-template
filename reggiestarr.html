@@ -48,6 +48,9 @@
         .cart-continue-btn { display: block; width: 100%; padding: 12px; background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; cursor: pointer; }
 
         @media (max-width: 768px) {
+            .mobile-menu-btn { display: block; }
+            .mobile-nav { display: none; }
+            .mobile-nav.open { display: flex; }
             .container { padding: 0 16px; }
             .page-title { padding: 40px 0 30px; }
             .page-title h1 { font-size: 1.8rem; }
@@ -71,9 +74,26 @@
         .lang-menu button { display: block; width: 100%; padding: 10px 16px; background: none; border: none; color: white; text-align: left; cursor: pointer; }
         .lang-menu button:hover { background: #333; }
 
+        .mobile-menu-btn { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; padding: 8px; }
+        .mobile-nav { display: none; position: fixed; top: 70px; left: 0; right: 0; background: #0d0d0d; border-bottom: 1px solid #1f1f1f; padding: 20px; z-index: 99; flex-direction: column; gap: 12px; }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav a { color: #fff; font-size: 1.1rem; padding: 12px; border-bottom: 1px solid #1f1f1f; text-decoration: none; }
+        .mobile-nav a:hover { color: #228B22; }
+
 </style>
 </head>
 <body>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+    <div class="mobile-nav" id="mobileNav">
+        <a href="/">Home</a>
+        <a href="/agents.html">Agents</a>
+        <a href="/software.html">Software</a>
+        <a href="/services.html">Services</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/payment.html">Payment</a>
+        <a href="https://tappylewis.cloud">Tappy Lewis</a>
+    </div>
+
 
     <div class="lang-selector">
         <button class="lang-current" onclick="toggleLangMenu()">
@@ -175,6 +195,7 @@
     function updateCartDisplay() { let cart = JSON.parse(localStorage.getItem('cart') || '[]'); document.getElementById('cartCount').textContent = cart.length; let total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0); document.getElementById('cartTotal').textContent = total.toFixed(2); let itemsHtml = cart.length === 0 ? '<p class="empty-cart">Your cart is empty</p>' : cart.map((item, i) => '<div class="cart-item"><span>' + item.name + '</span><span>$' + item.price + ' <button onclick="removeFromCart(' + i + ')">✕</button></span></div>').join(''); document.getElementById('cartItems').innerHTML = itemsHtml; if (cart.length > 0) { let itemNames = cart.map(i => i.name).join(', '); let itemPrices = cart.map(i => i.price).join(','); document.getElementById('cartPayBtn').href = '/payment.html?items=' + encodeURIComponent(itemNames) + '&total=' + total.toFixed(2); } }
     window.addEventListener('DOMContentLoaded', function() { updateCartDisplay(); });
     </script>
+    <script>function toggleMobileMenu() { document.getElementById("mobileNav").classList.toggle("open"); }</script>
 
     <script>
     const translations = {
@@ -213,5 +234,6 @@
         }
     });
     </script>
+    <script>function toggleMobileMenu() { document.getElementById("mobileNav").classList.toggle("open"); }</script>
 </body>
 </html>
