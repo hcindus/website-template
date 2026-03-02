@@ -459,38 +459,39 @@
         };
         
         function selectCrypto(crypto) {
-            console.log('selectCrypto called:', crypto);
             selectedCrypto = crypto;
-            const w = wallets[crypto];
-            if (!w) {
-                console.log('Wallet not found:', crypto);
-                return;
-            }
-            console.log('Wallet found:', w);
             
-            // Update crypto amount
-            updateCryptoAmount();
+            // Get wallet info
+            var w = wallets[crypto];
+            if (!w) return;
             
-            // Update title and address
+            // Update display
             document.getElementById('cryptoTitle').textContent = w.name;
             document.getElementById('walletAddress').textContent = w.address;
             
+            // Update crypto amount
+            var total = window.cartTotal || 0;
+            var rate = cryptoRates[crypto] || 1;
+            var cryptoAmt = total / rate;
+            document.getElementById('cryptoAmountDisplay').textContent = crypto + ' ' + cryptoAmt.toFixed(crypto === 'BTC' ? 6 : 2);
+            
             // Update QR code
-            const qrDiv = document.getElementById('qrcode');
-            qrDiv.innerHTML = '';
-            if (typeof QRCode !== 'undefined') {
-                QRCode.toCanvas(document.createElement('canvas'), w.address, { width: 180 }, function(err, canvas) {
-                    if (!err) qrDiv.appendChild(canvas);
+            var qrDiv = document.getElementById('qrcode');
+            if (qrDiv && typeof QRCode !== 'undefined') {
+                qrDiv.innerHTML = '';
+                QRCode.toCanvas(document.createElement('canvas'), w.address, { width: 200 }, function(err, canvas) {
+                    if (!err && canvas) qrDiv.appendChild(canvas);
                 });
             }
             
-            // Update selected card styling
-            document.querySelectorAll('.payment-card').forEach(card => {
-                card.classList.remove('selected');
-                if (card.getAttribute('onclick')?.includes(crypto)) {
-                    card.classList.add('selected');
+            // Update card styling
+            var cards = document.getElementsByClassName('payment-card');
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].classList.remove('selected');
+                if (cards[i].getAttribute('onclick') && cards[i].getAttribute('onclick').indexOf(crypto) > -1) {
+                    cards[i].classList.add('selected');
                 }
-            });
+            }
         }
         
         function copyAddress() {
