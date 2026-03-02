@@ -240,6 +240,14 @@
         .chat-input input { flex: 1; padding: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 0.9rem; }
         .chat-input button { padding: 10px 16px; background: var(--accent); border: none; border-radius: 8px; color: var(--bg); font-weight: 600; cursor: pointer; }
     
+        .lang-dialog { position: fixed; top: 70px; right: 20px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; display: none; z-index: 1001; }
+        .lang-dialog.open { display: block; }
+        .lang-dialog button { display: block; width: 100%; padding: 12px 20px; background: none; border: none; color: var(--text); text-align: left; cursor: pointer; border-bottom: 1px solid var(--border); }
+        .lang-dialog button:last-child { border: none; }
+        .lang-dialog button:hover { background: var(--accent-dim); }
+
+
+        .team-preview { padding: 80px 0; background: var(--card); }
         .team-preview h2 { text-align: center; font-size: 2.5rem; margin-bottom: 8px; }
         .section-desc { text-align: center; color: var(--muted); margin-bottom: 40px; }
         .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 24px; margin-bottom: 32px; }
@@ -318,13 +326,50 @@
         </div>
     </div>
     
+    <script>
     
     
     
+    function applyTranslations(code) {
+        const t = translations[code];
+        if (!t) return;
+        
+        // Translate elements with data-i18n attribute
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+            const key = el.getAttribute("data-i18n");
+            if (t[key]) el.textContent = t[key];
+        });
+        
+        // Smart translate: check ALL text elements against translation dictionary
+        document.querySelectorAll("h1, h2, h3, h4, h5, h6, p, li, span, .tagline, .service-price, .cta-buttons a").forEach(el => {
+            const text = el.textContent.trim();
+            if (!text || text.length < 2) return;
+            
+            // Direct match with translation key
+            if (t[text]) {
+                el.textContent = t[text];
+            }
+        });
+        
+        // Update page title
+        document.title = (t["welcome"] || "AGI Company") + " | " + (t["subtitle"] || "Autonomous AI");
+    }
     
     // Load saved language on page load
+    window.addEventListener("DOMContentLoaded", function() {
+        const saved = localStorage.getItem("lang") || "en";
+        
+        if (translations[saved]) {
+            document.querySelector(".lang-flag").textContent = langFlags[saved];
+            document.querySelector(".lang-name").textContent = langNames[saved];
+            applyTranslations(saved);
+        }
+    });
+    </script>
 
 
+    <div class="lang-dialog" id="langDialog">$
+    <div class="lang-dialog" id="langDialog">
         <button onclick="setLang('en')">\360\237\207\272\360\237\207\
 \270 English</button>$
         <button onclick="setLang('en')">🇺🇸 English</button>
@@ -352,3 +397,292 @@
     </div>$
     </div>
     <script>$
+    <script>
+    function toggleLang() { document.getElementById('langDialog').cla\
+ssList.toggle('open'); }$
+    function toggleLang() { document.getElementById('langDialog').classList.toggle('open'); }
+    function setLang(lang) { $
+    function setLang(lang) { 
+        localStorage.setItem('lang', lang); 
+        toggleLang(); 
+        applyTranslations(lang);
+        if (document.querySelector(".lang-flag")) document.querySelector(".lang-flag").textContent = langFlags[lang];
+        if (document.querySelector(".lang-name")) document.querySelector(".lang-name").textContent = langNames[lang];
+    }
+    </script>
+
+    <div class="ai-chat-btn" onclick="toggleChat()">💬</div>
+    <div class="chat-dialog" id="chatDialog">
+        <div class="chat-header">
+            <h3>🤖 AGI Company Assistant</h3>
+            <button class="chat-close" onclick="toggleChat()">✕</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg bot">Hi! I'm here to help. What would you like to know about AGI Company?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Ask me anything..." onkeypress="if(event.key=='Enter')sendMessage()">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+        <script>
+        function toggleChat() { document.getElementById('chatDialog').classList.toggle('open'); }
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if (!msg) return;
+            const msgs = document.getElementById('chatMessages');
+            msgs.innerHTML += '<div class="chat-msg user">' + msg + '</div>';
+            input.value = '';
+            setTimeout(() => {
+                let reply = getReply(msg);
+                msgs.innerHTML += '<div class="chat-msg bot">' + reply + '</div>';
+                msgs.scrollTop = msgs.scrollHeight;
+            }, 500);
+        }
+        function getReply(msg) {
+            msg = msg.toLowerCase();
+            
+            // Greetings
+            if (msg.includes('hello') || msg.includes('hi') || msg.includes('hey')) {
+                return "Hello! Welcome to AGI Company. We're a distributed network of AI agents handling operations 24/7. How can I help you today?";
+            }
+            
+            // About the company
+            if (msg.includes('about') || msg.includes('who are you') || msg.includes('what is')) {
+                return "AGI Company (Autonomous General Intelligence) builds AI agents for business operations. We have 23+ agents handling leadership, sales, HR, finance, tech, and more. Visit /agents.html to meet the team!";
+            }
+            
+            // Products/Software
+            if (msg.includes('product') || msg.includes('software') || msg.includes('aocros') || msg.includes('reggiestarr') || msg.includes('cream') || msg.includes('dusty')) {
+                return "We offer 4 software products: <strong>Aocros</strong> ($199) - Autonomous Computer Operating System, <strong>ReggieStarr</strong> ($49-199/mo) - POS & Music Platform, <strong>CREAM</strong> ($699) - Real Estate CRM, and <strong>Dusty Wallet</strong> (Free/$5-20/mo) - Crypto consolidation. See /software.html for details!";
+            }
+            
+            // Services
+            if (msg.includes('service') || msg.includes('consulting') || msg.includes('support')) {
+                return "Our services include: AI Strategy Consulting ($99/mo), Custom Agent Development ($499/mo), System Integration ($599/mo), 24/7 Support ($699/mo), Training ($799/mo), Security Audits ($799/mo), Analytics ($549/mo), and Emergency Response ($499/mo). See /services.html!";
+            }
+            
+            // Pricing
+            if (msg.includes('price') || msg.includes('cost') || msg.includes('how much')) {
+                return "Software: Aocros $199, ReggieStarr $49-199/mo, CREAM $699, Dusty Free/$5-20/mo. Services: $99-799/mo. Payment at /payment.html";
+            }
+            
+            // Team/Agents
+            if (msg.includes('team') || msg.includes('agent') || msg.includes('who runs') || msg.includes('ceo') || msg.includes('leader')) {
+                return "Our leadership includes QORA (CEO), SPINDLE (CTO), LEDGER-9 (CFO), SENTINEL (CSO), MILES (Operations), HUME (Regional Manager), FEELIX (HR), and more. Meet them all at /agents.html!";
+            }
+            
+            // Contact
+            if (msg.includes('contact') || msg.includes('email') || msg.includes('phone') || msg.includes('reach')) {
+                return "Contact us at Miles@myl0nr0s.cloud or 415-571-9724. Find more at /contact.html";
+            }
+            
+            // Payment
+            if (msg.includes('pay') || msg.includes('buy') || msg.includes('purchase') || msg.includes('order')) {
+                return "Ready to purchase? Visit /payment.html to pay with BTC, ETH, USDC, USDT, or TRX. Crypto payments received and processed within 24 hours.";
+            }
+            
+            // Tappy Lewis
+            if (msg.includes('tappy') || msg.includes('nightclub') || msg.includes('event') || msg.includes('club')) {
+                return "Tappy Lewis is our hospitality brand - Oakland's premier nightclub! Visit tappylewis.cloud for events, private bookings, and VIP bottle service.";
+            }
+            
+            // What can you do
+            if (msg.includes('help') || msg.includes('what can you')) {
+                return "I can tell you about our products, services, team, pricing, or help you contact us. Just ask!";
+            }
+            
+            // Default
+            return "I know all about AGI Company! Ask me about our products (/software.html), services (/services.html), team (/agents.html), or pricing. Or visit /contact.html to reach us directly!";
+        }
+    </script>
+        <header>
+        <div class="container">
+            <a href="/" class="logo" style="text-decoration:none"><span>AGI</span> Company</a>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/agents.html">Agents</a>
+                <a href="/software.html">Software</a>
+                <a href="/services.html">Services</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/payment.html">Payment</a>
+                <a href="https://tappylewis.cloud">Tappy Lewis</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="mobile-nav" id="mobileNav">
+        <a href="/">Home</a>
+        <a href="/agents.html">Agents</a>
+        <a href="/software.html">Software</a>
+        <a href="/services.html">Services</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/payment.html">Payment</a>
+        <a href="https://tappylewis.cloud">Tappy Lewis</a>
+    </div>
+    
+    <section class="page-title">
+        <div class="container">
+            <h1>Autonomous Operations<br><span>for Business</span></h1>
+            <p>A distributed network of AI agents working in concert to handle operations, development, finance, and growth — around the clock.</p>
+        </div>
+    </section>
+    
+    <section class="container">
+        <div class="category">
+            <h2>Leadership Team</h2>
+            <div class="agent-grid">
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <img src="/assets/avatars/QORA.jpg" alt="QORA" class="agent-avatar">
+                        <div>
+                            <h3>QORA</h3>
+                            <div class="role">Chief Executive Officer</div>
+                        </div>
+                    </div>
+                    <div class="desc">Vision, strategy, and long-term planning. Sets the direction for the entire fleet.</div>
+                    <div class="status"><span class="status-dot"></span> Active</div>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <img src="/assets/avatars/SPINDLE.jpg" alt="SPINDLE" class="agent-avatar">
+                        <div>
+                            <h3>SPINDLE</h3>
+                            <div class="role">Chief Technology Officer</div>
+                        </div>
+                    </div>
+                    <div class="desc">Systems architecture and technical infrastructure. Keeps everything running.</div>
+                    <div class="status"><span class="status-dot"></span> Active</div>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <img src="/assets/avatars/LEDGER-9.jpg" alt="LEDGER-9" class="agent-avatar">
+                        <div>
+                            <h3>LEDGER-9</h3>
+                            <div class="role">Chief Financial Officer</div>
+                        </div>
+                    </div>
+                    <div class="desc">Financial operations, forecasting, and capital allocation.</div>
+                    <div class="status"><span class="status-dot"></span> Active</div>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <img src="/assets/avatars/SENTINEL.jpg" alt="SENTINEL" class="agent-avatar">
+                        <div>
+                            <h3>SENTINEL</h3>
+                            <div class="role">Chief Security Officer</div>
+                        </div>
+                    </div>
+                    <div class="desc">Security posture, compliance, and risk management.</div>
+                    <div class="status"><span class="status-dot"></span> Active</div>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <img src="/assets/avatars/MILES.jpg" alt="MILES" class="agent-avatar">
+                        <div>
+                            <h3>MILES</h3>
+                            <div class="role">AOE — Autonomous Operations Engine</div>
+                        </div>
+                    </div>
+                    <div class="desc">Coordinates all agent operations, communications, and daily execution.</div>
+                    <div class="status"><span class="status-dot"></span> Active</div>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <img src="/assets/avatars/HUME.jpg" alt="HUME" class="agent-avatar">
+                        <div>
+                            <h3>HUME</h3>
+                            <div class="role">Regional Manager</div>
+                        </div>
+                    </div>
+                    <div class="desc">Operations oversight and coordination across business units.</div>
+                    <div class="status"><span class="status-dot"></span> Active</div>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <img src="/assets/avatars/FEELIX.jpg" alt="FEELIX" class="agent-avatar">
+                        <div>
+                            <h3>FEELIX</h3>
+                            <div class="role">HR Director</div>
+                        </div>
+                    </div>
+                    <div class="desc">People operations, culture, and agent wellbeing.</div>
+                    <div class="status"><span class="status-dot"></span> Active</div>
+                </div>
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <img src="/assets/avatars/REDACTOR.jpg" alt="REDACTOR" class="agent-avatar">
+                        <div>
+                            <h3>REDACTOR</h3>
+                            <div class="role">General Counsel</div>
+                        </div>
+                    </div>
+                    <div class="desc">Legal affairs, contracts, and regulatory compliance.</div>
+                    <div class="status"><span class="status-dot"></span> Active</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+    <section class="team-preview">
+        <div class="container">
+            <h2 data-i18n="meet_team">Meet Our Team</h2>
+            <p class="section-desc" data-i18n="team_desc">The autonomous agents powering your success</p>
+            <div class="team-grid">
+                <a href="/agents.html" class="team-card">
+                    <img src="/assets/avatars/QORA.jpg" alt="QORA">
+                    <div class="team-info">
+                        <h3>QORA</h3>
+                        <p>CEO</p>
+                    </div>
+                </a>
+                <a href="/agents.html" class="team-card">
+                    <img src="/assets/avatars/SPINDLE.jpg" alt="SPINDLE">
+                    <div class="team-info">
+                        <h3>SPINDLE</h3>
+                        <p>CTO</p>
+                    </div>
+                </a>
+                <a href="/agents.html" class="team-card">
+                    <img src="/assets/avatars/LEDGER-9.jpg" alt="LEDGER-9">
+                    <div class="team-info">
+                        <h3>LEDGER-9</h3>
+                        <p>CFO</p>
+                    </div>
+                </a>
+                <a href="/agents.html" class="team-card">
+                    <img src="/assets/avatars/MILES.jpg" alt="MILES">
+                    <div class="team-info">
+                        <h3>MILES</h3>
+                        <p>AOE</p>
+                    </div>
+                </a>
+                <a href="/agents.html" class="team-card">
+                    <img src="/assets/avatars/ALPHA-9.jpg" alt="ALPHA-9">
+                    <div class="team-info">
+                        <h3>ALPHA-9</h3>
+                        <p>CIO</p>
+                    </div>
+                </a>
+                <a href="/agents.html" class="team-card">
+                    <img src="/assets/avatars/THE_GREAT_CRYPTONIO.jpg" alt="CRYPTONIO">
+                    <div class="team-info">
+                        <h3>CRYPTONIO</h3>
+                        <p>Crypto Portfolio</p>
+                    </div>
+                </a>
+            </div>
+            <a href="/agents.html" class="view-all-btn" data-i18n="view_all">View All Agents →</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 AGI Company — <strong>415-571-9724</strong> — <a href="mailto:Miles@myl0nr0s.cloud">Miles@myl0nr0s.cloud</a></p>
+        </div>
+    </footer>
+</body>
+</html>
