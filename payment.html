@@ -225,6 +225,8 @@
         .cart-total-display { font-size: 1.5rem; font-weight: 700; color: #228B22; margin: 20px 0; }
         .cart-actions { display: flex; gap: 12px; justify-content: center; }
         .btn-continue { display: inline-block; padding: 12px 24px; background: #22d3ee; color: #000; border-radius: 8px; font-weight: 600; text-decoration: none; }
+        
+        #cryptoAmountDisplay { font-size: 1.5rem; color: #228B22; font-weight: 700; margin: 10px 0; }
         .btn-clear { padding: 12px 24px; background: transparent; border: 1px solid #f97316; color: #f97316; border-radius: 8px; cursor: pointer; }
     </style>
 </head>
@@ -385,6 +387,7 @@
         <div class="order-summary">
             <div class="item" id="orderItem">Loading...</div>
             <div class="amount" id="orderAmount">$0</div>
+            <div id="cryptoAmountDisplay"></div>
         </div>
         
         <div class="payment-grid">
@@ -765,6 +768,11 @@
         if (orderItem) orderItem.innerHTML = itemHtml;
         if (orderAmount) orderAmount.textContent = "$" + total.toFixed(2);
         window.cartTotal = total;
+        
+        // Update crypto amount when cart changes
+        if (typeof updateCryptoAmount === 'function') {
+            updateCryptoAmount();
+        }
     }
     
     function addToCart(name, price) {
